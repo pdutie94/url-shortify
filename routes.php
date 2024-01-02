@@ -1,24 +1,7 @@
 <?php
-
-function site_url() {
-    $protocol = '';
-    if (isset($_SERVER['HTTPS']) &&
-        ($_SERVER['HTTPS'] == 'on' || $_SERVER['HTTPS'] == 1) ||
-        isset($_SERVER['HTTP_X_FORWARDED_PROTO']) &&
-        $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
-        $protocol = 'https://';
-    }
-    else {
-        $protocol = 'http://';
-    }
-    $domain_name = $_SERVER['HTTP_HOST'];
-    return $protocol.$domain_name;
-}
-define('SITE_URL', site_url());
-
 $controllers = array(
-    'pages' => ['home', 'login', 'error'],
-    'login' => ['index'],
+    'pages' => ['home', 'error'],
+    'login' => ['index', 'logout'],
 ); // Các controllers trong hệ thống và các action có thể gọi ra từ controller đó.
 
 // Nếu các tham số nhận được từ URL không hợp lệ (không thuộc list controller và action có thể gọi

@@ -1,5 +1,9 @@
 <?php
+// Initialize the session
+session_start();
+
 require_once('connection.php');
+require_once('helper.php');
 
 if (isset($_GET['controller'])) {
     $controller = $_GET['controller'];
