@@ -12,11 +12,11 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/models/user.php');
 
                     <ul class="uk-navbar-nav">
                         <li class="menu-item uk-active">
-                            <a href="<?= SITE_URL; ?>"><span class="uk-margin-small-right" uk-icon="home"></span>Trang Chủ</a>
+                            <a href="<?= SITE_URL; ?>"><span class="uk-margin-small-right" uk-icon="home"></span>Dashboard</a>
                         </li>
                         <?php if (is_user_logged_in()) { ?>
                             <li class="menu-item">
-                                <a href="#"><span class="uk-margin-small-right" uk-icon="link"></span>Tạo Link</a>
+                                <a href="<?php echo SITE_URL. '/index.php?controller=links'; ?>"><span class="uk-margin-small-right" uk-icon="link"></span>Tạo Link</a>
                             </li>
                             <li class="menu-item">
                                 <a href="#"><span class="uk-margin-small-right" uk-icon="settings"></span>Thống Kê</a>

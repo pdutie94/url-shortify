@@ -1,3 +1,6 @@
 .site-main {
     min-height: 80vh;
 }
+.uk-modal.uk-flex-middle.uk-open {
+    display: flex !important;
+}

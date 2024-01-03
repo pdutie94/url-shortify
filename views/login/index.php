@@ -33,7 +33,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 ?>
-<div class="uk-section uk-animation-fade">
+<div class="uk-section uk-animation-fade uk-flex uk-flex-middle" uk-height-viewport>
 	<div class="uk-width-1-1">
 		<div class="uk-container">
 			<div class="uk-grid-margin uk-grid uk-grid-stack" uk-grid>

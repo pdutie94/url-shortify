@@ -4,7 +4,7 @@ require_once('controllers/base_controller.php');
 
 class LoginController extends BaseController {
     function __construct() {
-        $this->folder = 'pages';
+        $this->folder = 'login';
     }
 
     public function index() {
@@ -12,7 +12,7 @@ class LoginController extends BaseController {
             header("location: " . SITE_URL);
         }
         $data = array();
-        $this->render('login', $data);
+        $this->render('index', $data);
     }
 
     public function logout() {

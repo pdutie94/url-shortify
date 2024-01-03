@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jan 02, 2024 at 07:16 PM
+-- Generation Time: Jan 03, 2024 at 12:44 PM
 -- Server version: 8.0.30
--- PHP Version: 7.4.33
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -34,13 +34,6 @@ CREATE TABLE `links` (
   `user_id` int UNSIGNED NOT NULL,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `links`
---
-
-INSERT INTO `links` (`id`, `long_url`, `short_url`, `user_id`, `created_at`) VALUES
-(1, 'https://abnewslite.com/heartbreaking-note-abandoned-cat/', 'abc123', 1, '2024-01-02 22:01:20');
 
 -- --------------------------------------------------------
 
@@ -87,8 +80,7 @@ INSERT INTO `users` (`id`, `username`, `email`, `password`, `role`, `created_at`
 ALTER TABLE `links`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `short_url` (`short_url`),
-  ADD UNIQUE KEY `user_id` (`user_id`),
-  ADD KEY `user_id_2` (`user_id`);
+  ADD KEY `USER ID` (`user_id`);
 
 --
 -- Indexes for table `links_counter`
@@ -110,7 +102,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `links`
 --
 ALTER TABLE `links`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `links_counter`
@@ -122,7 +114,7 @@ ALTER TABLE `links_counter`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints for dumped tables
@@ -132,7 +124,7 @@ ALTER TABLE `users`
 -- Constraints for table `links`
 --
 ALTER TABLE `links`
-  ADD CONSTRAINT `USER_ID` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+  ADD CONSTRAINT `USER ID` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
