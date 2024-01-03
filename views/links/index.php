@@ -1,10 +1,13 @@
+<?php
+require_once('models/user.php');
+?>
 <div class="uk-section uk-animation-fade">
 	<div class="uk-width-1-1">
 		<div class="uk-container">
 			<div class="uk-grid-margin uk-grid uk-grid-stack" uk-grid>
 				<div class="uk-width-1-1@m">
 					<div class="uk-margin uk-margin-auto uk-card uk-card-default uk-card-medium uk-card-body uk-box-shadow-small">
-						<h3 class="uk-card-title uk-text-left">Tạo Short Link</h3>
+						<h3 class="uk-card-title uk-text-left uk-margin-small-bottom">Tạo Short Link</h3>
 						<form class="form-short_link" action="" method="post">
 							<div class="form-control uk-margin">
 								<div class="uk-inline uk-width-1-1">
@@ -17,6 +20,35 @@
 							</div>
 						</form>
 					</div>
+				</div>
+			</div>
+			<div class="links-list-arena uk-margin-large-top">
+				<h3 class="uk-margin-small-bottom">Danh sách link đã tạo</h3>
+				<div class="uk-overflow-auto">
+					<table class="uk-table uk-table-middle uk-table-divider" style="max-height: 500px; overflow-y: auto">
+						<thead>
+							<tr>
+								<th class="uk-width-small">Tài khoản</th>
+								<th class="uk-table-expand">Link đích</th>
+								<th class="uk-width-medium">Rút gọn</th>
+								<th class="uk-width-small">Thời gian</th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php if ( count( $links ) > 0 ) { ?>
+								<?php foreach($links as $link) { 
+									$user = User::get_user_by_id($link['user_id']);
+									$date = date_create($link['created_at']);
+									?>
+									<tr>
+										<td class="uk-text-nowrap"><?= $user['username']; ?></td>
+										<td class="uk-text-truncate"><?= $link['long_url']; ?></td>
+										<td class="uk-text-truncate"><?= SITE_URL . '/?u=' . $link['short_url']; ?></td>
+										<td class="uk-text-nowrap"><?= date_format($date,"d-m-Y H:i:s"); ?></td>
+									</tr>
+								<?php } ?>
+							<?php } ?>
+					</table>
 				</div>
 			</div>
 		</div>

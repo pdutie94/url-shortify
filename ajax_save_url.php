@@ -7,7 +7,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/models/user.php');
 $db = DB::getInstance();
 
 $long_url = $_POST['long_url'];
-$short_id = $_POST['short_url'];
+$short_id = $_POST['short_url_id'];
 
 if ( ! empty( $long_url ) && ! empty( $short_id ) && filter_var( $long_url, FILTER_VALIDATE_URL ) ) {
     $sql_get_short_id = 'SELECT short_url FROM links WHERE short_url = :short_url';

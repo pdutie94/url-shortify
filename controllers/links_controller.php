@@ -1,17 +1,24 @@
 <?php
 require_once('controllers/base_controller.php');
+require_once('models/link.php');
+require_once('models/user.php');
 
 class LinksController extends BaseController {
     function __construct() {
         $this->folder = 'links';
+
+        parent::__construct();
     }
 
     public function index() {
-        if (!is_user_logged_in()) {
-            header("location: " . SITE_URL . "/index.php?controller=login");
-            exit();
-        }
-        $data = array();
+        $links = Link::all(10);
+        $data = array('links' => $links);
         $this->render('index', $data);
+    }
+
+    public function list() {
+        $links = Link::all(20);
+        $data = array('links' => $links);
+        $this->render('list', $data);
     }
 }

@@ -18,6 +18,13 @@ class User {
         return $user;
     }
 
+    public static function get_user_by_id( $user_id ) {
+        $sql  = 'SELECT * FROM users WHERE id=:id';
+		$user = DB::fetch($sql, array( ':id' => $user_id));
+
+        return $user;
+    }
+
     public static function get_current_user() {
         $sql  = 'SELECT * FROM users WHERE id=:id';
 		$user = DB::fetch($sql, array( ':id' => $_SESSION['id']));

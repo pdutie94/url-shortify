@@ -29,7 +29,10 @@ $title = is_user_logged_in() ? 'Dashboard' : "Đăng nhập";
         <?php if ( 'login' === $_GET['controller'] ) { ?>
             <script src="<?= SITE_URL ?>/assets/js/login.js"></script>
         <?php } ?>
-        <?php if ( 'links' === $_GET['controller'] ) { ?>
+        <?php if ( 'links' === $_GET['controller'] && ! isset( $_GET['action'] ) ) { ?>
+            <script>/* <![CDATA[ */
+            var site_params = {'site_url': '<?= SITE_URL; ?>'}
+            /* ]]> */</script>
             <script src="<?= SITE_URL ?>/assets/js/shortlink.js"></script>
         <?php } ?>
     <?php } ?>

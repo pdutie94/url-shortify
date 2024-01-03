@@ -8,7 +8,6 @@ function afterSendRequest( form) {
     formBtn.removeAttribute("disabled")
 }
 
-
 document.addEventListener('DOMContentLoaded', function(event) {
     var shortLinkForm = document.querySelector('.form-short_link')
     var saveShortLinkForm = document.querySelector('.form-save-short_link')
@@ -24,11 +23,11 @@ document.addEventListener('DOMContentLoaded', function(event) {
             xhr.onload = function() {
                 if ( xhr.readyState == 4 && xhr.status == 200 ) {
                     var data = JSON.parse(xhr.response);
-                    var domain = 'http://url-shortify.test/'
+                    var domain = site_params.site_url
                     if ( shortLinkForm ) {
                         saveShortLinkForm.querySelector('input[name="short_url_id"]').value = data.short_id
                         saveShortLinkForm.querySelector('input[name="long_url"]').value = data.long_url
-                        saveShortLinkForm.querySelector('.short_url').value = domain + data.short_id
+                        saveShortLinkForm.querySelector('.short_url').value = domain + '/?u=' + data.short_id
                         UIkit.modal('#short_link-popup', popupOptions).show()
                     }
                     afterSendRequest(shortLinkForm)

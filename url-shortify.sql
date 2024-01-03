@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jan 03, 2024 at 12:44 PM
+-- Generation Time: Jan 03, 2024 at 06:52 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.2.12
 
@@ -59,7 +59,7 @@ CREATE TABLE `users` (
   `username` varchar(30) COLLATE utf8mb4_general_ci NOT NULL,
   `email` varchar(250) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `password` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `role` tinyint(1) NOT NULL COMMENT '1: Admin, 0: Member',
+  `role` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1: Admin, 0: Member',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -68,7 +68,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `email`, `password`, `role`, `created_at`) VALUES
-(1, 'pdutie94', 'pdutie94@gmail.com', '$2y$10$H4IZsdzrGYqwI78tbl5p/.kgedsuQxGdK1rYRAl5FuhHEXJHwV962', 1, '2024-01-02 21:59:09');
+(1, 'pdutie94', 'pdutie94@gmail.com', '$2y$10$H4IZsdzrGYqwI78tbl5p/.kgedsuQxGdK1rYRAl5FuhHEXJHwV962', 1, '2024-01-02 21:59:09'),
+(3, 'member', NULL, '$2y$10$iwAq6S0tzq7RCYC3yQpakumDTFZEuAJKy7tD4YopKr1UCHcSB6DDy', 0, '2024-01-03 23:15:51');
 
 --
 -- Indexes for dumped tables
@@ -102,7 +103,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `links`
 --
 ALTER TABLE `links`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `links_counter`
@@ -114,7 +115,7 @@ ALTER TABLE `links_counter`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables
