@@ -10,7 +10,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/models/user.php');
                 <div class="uk-navbar-left">
                     <!-- <a class="uk-navbar-item uk-logo" href="#" aria-label="Back to Home">Logo</a> -->
 
-                    <ul class="uk-navbar-nav">
+                    <ul class="uk-navbar-nav uk-visible@s">
                         <li class="menu-item uk-active">
                             <a href="<?= SITE_URL; ?>"><span class="uk-margin-small-right" uk-icon="home"></span>Dashboard</a>
                         </li>
@@ -26,6 +26,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/models/user.php');
                             </li>
                         <?php } ?>
                     </ul>
+                    <a href="#" class="uk-navbar-toggle uk-hidden@s" uk-navbar-toggle-icon uk-toggle="target: #sidenav"></a>
 
                 </div>
 
@@ -49,4 +50,24 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/models/user.php');
             </div>
         </div>
     </nav>
+</div>
+<div id="sidenav" uk-offcanvas="flip: false" class="uk-offcanvas">
+    <div class="uk-offcanvas-bar">
+        <ul class="uk-nav">
+            <li class="menu-item uk-active">
+                <a href="<?= SITE_URL; ?>"><span class="uk-margin-small-right" uk-icon="home"></span>Dashboard</a>
+            </li>
+            <?php if (is_user_logged_in()) { ?>
+                <li class="menu-item">
+                    <a href="<?php echo SITE_URL. '/index.php?controller=links'; ?>"><span class="uk-margin-small-right" uk-icon="link"></span>Tạo Link</a>
+                </li>
+                <li class="menu-item">
+                    <a href="<?php echo SITE_URL. '/index.php?controller=links&action=list'; ?>"><span class="uk-margin-small-right" uk-icon="list"></span>Danh sách Link</a>
+                </li>
+                <li class="menu-item">
+                    <a href="#"><span class="uk-margin-small-right" uk-icon="settings"></span>Thống Kê</a>
+                </li>
+            <?php } ?>
+        </ul>
+    </div>
 </div>
