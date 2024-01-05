@@ -1,5 +1,5 @@
 <?php
-date_default_timezone_set('Asia/Ho_Chi_Minh'); // Chọn múi giờ tương ứng.
+date_default_timezone_set('Asia/Ho_Chi_Minh'); // Chọn múi giờ tương ứng
 // Initialize the session
 session_start();
 
