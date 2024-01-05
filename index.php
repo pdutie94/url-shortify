@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('Asia/Ho_Chi_Minh'); // Chọn múi giờ tương ứng.
 // Initialize the session
 session_start();
 
@@ -20,6 +21,7 @@ if ( isset( $_GET['u'] ) ) {
         // Ghi log mỗi khi có một lượt xem mới
         $ipAddress = $_SERVER['REMOTE_ADDR'];
         $currentDate = date('Y-m-d');
+        var_dump($currentDate);
         $linkId = filter_var($_GET['u']);
 
         // Lấy danh sách các IP đã xem từ cơ sở dữ liệu
