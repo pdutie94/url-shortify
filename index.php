@@ -21,7 +21,6 @@ if ( isset( $_GET['u'] ) ) {
         // Ghi log mỗi khi có một lượt xem mới
         $ipAddress = $_SERVER['REMOTE_ADDR'];
         $currentDate = date('Y-m-d');
-        var_dump($currentDate);
         $linkId = filter_var($_GET['u']);
 
         // Lấy danh sách các IP đã xem từ cơ sở dữ liệu
@@ -74,7 +73,7 @@ if ( isset( $_GET['u'] ) ) {
         
             // Thực hiện các hành động khác nếu cần
         }
-        // header('location: ' . $long_url);
+        header('location: ' . $long_url);
     }
     exit();
 }
