@@ -21,7 +21,7 @@ if ( isset( $_GET['u'] ) ) {
         $ip_address = $_SERVER['REMOTE_ADDR'];
         $link_id = filter_var($_GET['u']);
         update_link_views($link_id, $ip_address);
-        // header('location: ' . $long_url);
+        header('location: ' . $long_url);
     }
     exit();
 }
