@@ -16,13 +16,15 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/models/user.php');
                         </li>
                         <?php if (is_user_logged_in()) { ?>
                             <li class="menu-item">
-                                <a href="<?php echo SITE_URL. '/index.php?controller=links'; ?>"><span class="uk-margin-small-right" uk-icon="link"></span>Tạo Link</a>
+                                <a href="<?php echo SITE_URL. '/index.php?controller=links'; ?>"><span class="uk-margin-small-right" uk-icon="link"></span>Tạo Link <span uk-navbar-parent-icon></span></a>
+                                <div class="uk-navbar-dropdown">
+                                    <ul class="uk-nav uk-navbar-dropdown-nav">
+                                        <li><a href="<?php echo SITE_URL. '/index.php?controller=links&action=list'; ?>"><span class="uk-margin-small-right" uk-icon="list"></span>Danh sách Link</a></li>
+                                    </ul>
+                                </div>
                             </li>
                             <li class="menu-item">
-                                <a href="<?php echo SITE_URL. '/index.php?controller=links&action=list'; ?>"><span class="uk-margin-small-right" uk-icon="list"></span>Danh sách Link</a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="#"><span class="uk-margin-small-right" uk-icon="settings"></span>Thống Kê</a>
+                                <a href="<?php echo SITE_URL. '/index.php?controller=user'; ?>"><span class="uk-margin-small-right" uk-icon="users"></span>Thành viên</a>
                             </li>
                         <?php } ?>
                     </ul>

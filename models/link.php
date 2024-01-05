@@ -27,6 +27,21 @@ class Link {
         return $list;
     }
 
+    public static function get_links_in_day() {
+        $db = DB::getInstance();
+        // Lấy ngày hiện tại
+        $currentDate = date('Y-m-d');
+
+        // Truy vấn SQL để lấy những liên kết đã tạo trong ngày hiện tại
+        $sql = "SELECT * FROM links WHERE DATE(created_at) = :current_date ORDER BY id DESC";
+        $query = $db->prepare($sql);
+        $query->bindParam(':current_date', $currentDate);
+        $query->execute();
+        $links = $query->fetchAll();
+
+        return $links;
+    }
+
     public static function pagination($limit = 20) {
         $curr_page = isset( $_GET['page'] ) ? intval( $_GET['page'] ) : 1;
         $per_page = $limit;

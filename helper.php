@@ -25,3 +25,15 @@ function is_admin_user() {
     $user = User::get_user_by_id($_SESSION['id']);
     return $user['role'] == 1;
 }
+
+function generateRandomString($length = 10) {
+    $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    $charactersLength = strlen($characters);
+    $randomString = '';
+
+    for ($i = 0; $i < $length; $i++) {
+        $randomString .= $characters[rand(0, $charactersLength - 1)];
+    }
+
+    return $randomString;
+}

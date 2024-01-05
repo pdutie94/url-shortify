@@ -1,0 +1,4 @@
+RewriteEngine On
+
+# Rewrite short URLs to the PHP script
+RewriteRule ^([a-zA-Z0-9]+)$ index.php?u=$1 [L]

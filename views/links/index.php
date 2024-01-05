@@ -24,14 +24,14 @@ require_once('models/user.php');
 			</div>
 			<div class="links-list-arena uk-margin-large-top">
 				<h3 class="uk-margin-small-bottom">Danh sách link đã tạo</h3>
-				<div class="uk-overflow-auto">
+				<div class="table-list uk-overflow-auto">
 					<table class="uk-table uk-table-middle uk-table-divider" style="max-height: 500px; overflow-y: auto">
 						<thead>
 							<tr>
-								<th class="uk-width-small">Tài khoản</th>
-								<th class="uk-table-expand">Link đích</th>
-								<th class="uk-width-medium">Rút gọn</th>
-								<th class="uk-width-small">Thời gian</th>
+								<th class="uk-width-small" style="min-width: 120px;">Tài khoản</th>
+								<th class="uk-table-expand" style="min-width: 300px;">Link đích</th>
+								<th class="uk-width-medium" style="min-width: 300px;">Link rút gọn</th>
+								<th class="uk-width-small" style="min-width: 180px;">Thời gian</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -43,7 +43,12 @@ require_once('models/user.php');
 									<tr>
 										<td class="uk-text-nowrap"><?= $user['username']; ?></td>
 										<td class="uk-text-truncate"><?= $link['long_url']; ?></td>
-										<td class="uk-text-truncate"><?= SITE_URL . '/?u=' . $link['short_url']; ?></td>
+										<td class="uk-text-truncate">
+											<div class="uk-inline uk-width-1-1">
+												<input value="<?= SITE_URL . '/' . $link['short_url']; ?>" class="uk-input uk-form-medium short_url" style="padding-right: 40px" type="text" readonly>
+												<a class="short_link-copy uk-form-icon uk-form-icon-flip" uk-tooltip="title: Sao chép; pos: bottom-right"><span uk-icon="icon: copy"></span></a>
+											</div>
+										</td>
 										<td class="uk-text-nowrap"><?= date_format($date,"d-m-Y H:i:s"); ?></td>
 									</tr>
 								<?php } ?>

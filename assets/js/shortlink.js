@@ -13,21 +13,25 @@ document.addEventListener('DOMContentLoaded', function(event) {
     var saveShortLinkForm = document.querySelector('.form-save-short_link')
     var copyShortLinkBtn = saveShortLinkForm.querySelector('.short_link-copy')
     var shortLinkSaveBtn = document.querySelector('.short_link-save')
+
     var popupOptions = { 'escClose': false, 'bgClose': false }
     UIkit.modal('#short_link-popup').hide()
+
     if (shortLinkForm) {
         shortLinkForm.addEventListener('submit', function(e) {
             e.preventDefault()
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "ajax_generate_short_url.php", true)
-            xhr.onload = function() {
+            var method = 'POST'
+            var url = 'includes/ajax.php'
+            var xhr = new XMLHttpRequest()
+            xhr.open(method, url, true)
+            xhr.onreadystatechange = function () {
                 if ( xhr.readyState == 4 && xhr.status == 200 ) {
                     var data = JSON.parse(xhr.response);
                     var domain = site_params.site_url
                     if ( shortLinkForm ) {
                         saveShortLinkForm.querySelector('input[name="short_url_id"]').value = data.short_id
                         saveShortLinkForm.querySelector('input[name="long_url"]').value = data.long_url
-                        saveShortLinkForm.querySelector('.short_url').value = domain + '/?u=' + data.short_id
+                        saveShortLinkForm.querySelector('.short_url').value = domain + '/' + data.short_id
                         UIkit.modal('#short_link-popup', popupOptions).show()
                     }
                     afterSendRequest(shortLinkForm)
@@ -35,16 +39,18 @@ document.addEventListener('DOMContentLoaded', function(event) {
             }
             beforeSendRequest(shortLinkForm)
             var formData = new FormData(shortLinkForm)
-            console.log( formData)
+            formData.append('action_name', 'generate_short_url_id')
             xhr.send(formData)
         })
         
     }
     if ( saveShortLinkForm ) { 
         shortLinkSaveBtn.onclick = function() {
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "ajax_save_url.php", true)
-            xhr.onload = function() {
+            var method = 'POST'
+            var url = 'includes/ajax.php'
+            var xhr = new XMLHttpRequest()
+            xhr.open(method, url, true)
+            xhr.onreadystatechange = function () {
                 if ( xhr.readyState == 4 && xhr.status == 200 ) {
                     var data = JSON.parse(xhr.response);
                     if (data.success) {
@@ -66,12 +72,11 @@ document.addEventListener('DOMContentLoaded', function(event) {
                 }
             }
             var formData = new FormData(saveShortLinkForm)
+            formData.append('action_name', 'save_short_url_id')
             xhr.send(formData)
         }
         copyShortLinkBtn.onclick = function() {
-            var copyText = saveShortLinkForm.querySelector('input[name="short_url"]')
-            copyText.select()
-            document.execCommand("copy")
+            copyCmd(saveShortLinkForm.querySelector('input[name="short_url"]'))
         }
     }
 })

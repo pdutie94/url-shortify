@@ -27,7 +27,7 @@ SET time_zone = "+00:00";
 -- Table structure for table `links`
 --
 
-CREATE TABLE `links` (
+CREATE TABLE IF NOT EXISTS `links` (
   `id` int UNSIGNED NOT NULL,
   `long_url` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `short_url` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
@@ -41,7 +41,7 @@ CREATE TABLE `links` (
 -- Table structure for table `links_counter`
 --
 
-CREATE TABLE `links_counter` (
+CREATE TABLE IF NOT EXISTS `links_counter` (
   `id` int UNSIGNED NOT NULL,
   `link_id` int UNSIGNED NOT NULL,
   `view` int UNSIGNED NOT NULL DEFAULT '0',
@@ -54,7 +54,7 @@ CREATE TABLE `links_counter` (
 -- Table structure for table `users`
 --
 
-CREATE TABLE `users` (
+CREATE TABLE IF NOT EXISTS `users` (
   `id` int UNSIGNED NOT NULL,
   `username` varchar(30) COLLATE utf8mb4_general_ci NOT NULL,
   `email` varchar(250) COLLATE utf8mb4_general_ci DEFAULT NULL,

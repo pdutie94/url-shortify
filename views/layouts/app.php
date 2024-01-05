@@ -24,7 +24,7 @@ $title = is_user_logged_in() ? 'Dashboard' : "Đăng nhập";
     <?php if (is_user_logged_in()) { ?>
         <?php include_once('footer.php'); ?>
     <?php } ?>
-
+    <script src="<?= SITE_URL ?>/assets/js/main.js"></script>
     <?php if( isset($_GET['controller']) ) { ?>
         <?php if ( 'login' === $_GET['controller'] ) { ?>
             <script src="<?= SITE_URL ?>/assets/js/login.js"></script>
