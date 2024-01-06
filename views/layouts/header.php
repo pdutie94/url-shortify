@@ -59,8 +59,11 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/models/user.php';
 				<a href="<?php echo SITE_URL; ?>"><span class="uk-margin-small-right" uk-icon="home"></span>Dashboard</a>
 			</li>
 			<li class="menu-item uk-parent">
-				<a href="<?php echo SITE_URL . '/index.php?controller=links'; ?>"><span class="uk-margin-small-right" uk-icon="link"></span>Tạo Link<span uk-nav-parent-icon></span></a>
+                <a href="#"><span class="uk-margin-small-right" uk-icon="link"></span>Link rút gọn<span uk-nav-parent-icon></a>
 				<ul class="uk-nav-sub">
+					<li class="menu-item">
+                        <a href="<?php echo SITE_URL . '/index.php?controller=links'; ?>"><span class="uk-margin-small-right" uk-icon="plus"></span>Tạo Link</a>
+					</li>
 					<li class="menu-item">
 						<a href="<?php echo SITE_URL . '/index.php?controller=links&action=list'; ?>"><span class="uk-margin-small-right" uk-icon="list"></span>Danh sách Link</a>
 					</li>
