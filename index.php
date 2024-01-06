@@ -43,12 +43,7 @@ if ( isset( $_GET['u'] ) ) {
 		$link_id    = filter_var( $_GET['u'] );
 		$check      = update_link_views( $link_id, $ip_address );
 
-		// if ($check) {
-			echo '<script>window.location.href = "' . $long_url . '";</script>';
-			// die();
-			// header("Location: includes/redirect.php?url=" . urlencode($long_url));
-			// exit();
-		// }
+		echo '<script>window.location.href = "' . $long_url . '";</script>';
 	}
 
 	die();
