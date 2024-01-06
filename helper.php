@@ -79,3 +79,39 @@ function update_link_views( $link_id, $ip_address ) {
 
 	return true;
 }
+
+// Hàm để hiển thị lượt xem theo ngày, tháng và tất cả thời gian
+function display_link_views( $shortUrl ) {
+	$db = DB::getInstance();
+
+	$currentDate  = date( 'Y-m-d' ); // Ngày hiện tại
+	$currentMonth = date( 'Y-m' ); // Tháng hiện tại
+
+	// Hiển thị lượt xem cho ngày hiện tại
+	$dailyViewsQuery     = 'SELECT COUNT(*) as daily_views FROM link_views WHERE short_url = :shortUrl AND date = :currentDate';
+	$dailyViewsStatement = $db->prepare( $dailyViewsQuery );
+	$dailyViewsStatement->bindParam( ':shortUrl', $shortUrl, PDO::PARAM_STR );
+	$dailyViewsStatement->bindParam( ':currentDate', $currentDate, PDO::PARAM_STR );
+	$dailyViewsStatement->execute();
+
+	echo 'Hôm nay: ' . $dailyViewsStatement->fetch( PDO::FETCH_ASSOC )['daily_views'] . '<br>';
+
+	// Hiển thị lượt xem cho tháng hiện tại
+	$monthlyViewsQuery     = "SELECT COUNT(*) as monthly_views FROM link_views WHERE short_url = :shortUrl AND DATE_FORMAT(date, '%Y-%m') = :currentMonth";
+	$monthlyViewsStatement = $db->prepare( $monthlyViewsQuery );
+	$monthlyViewsStatement->bindParam( ':shortUrl', $shortUrl, PDO::PARAM_STR );
+	$monthlyViewsStatement->bindParam( ':currentMonth', $currentMonth, PDO::PARAM_STR );
+	$monthlyViewsStatement->execute();
+
+	echo 'Tháng này: ' . $monthlyViewsStatement->fetch( PDO::FETCH_ASSOC )['monthly_views'] . '<br>';
+
+	// Hiển thị tổng lượt xem toàn thời gian
+	$totalViewsQuery     = 'SELECT COUNT(*) as total_views FROM link_views WHERE short_url = :shortUrl';
+	$totalViewsStatement = $db->prepare( $totalViewsQuery );
+	$totalViewsStatement->bindParam( ':shortUrl', $shortUrl, PDO::PARAM_STR );
+	$totalViewsStatement->execute();
+
+	echo 'Tất cả: ' . $totalViewsStatement->fetch( PDO::FETCH_ASSOC )['total_views'] . '<br>';
+
+	$db = null;
+}

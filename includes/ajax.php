@@ -52,7 +52,7 @@ function save_short_url_id() {
 
 	$long_url         = $_POST['long_url'];
 	$short_id         = $_POST['short_url_id'];
-	$current_datetime = date( 'Y-m-d H:i:s' );
+	$current_datetime = date( 'd-m-Y H:i:s' );
 
 	if ( ! empty( $long_url ) && ! empty( $short_id ) && filter_var( $long_url, FILTER_VALIDATE_URL ) ) {
 		$sql_get_short_id = 'SELECT short_url FROM links WHERE short_url = :short_url';
