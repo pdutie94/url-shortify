@@ -1,10 +1,10 @@
 .site-main {
-    min-height: 80vh;
+	min-height: 80vh;
 }
 .uk-modal.uk-flex-middle.uk-open {
-    display: flex !important;
+	display: flex !important;
 }
 .links-list-arena .table-list {
-    max-height: 500px;
-    overflow-y: auto;
+	max-height: 500px;
+	overflow-y: auto;
 }
