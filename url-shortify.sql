@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Generation Time: Jan 05, 2024 at 05:41 PM
--- Server version: 8.0.30
--- PHP Version: 8.2.12
+-- Máy chủ: localhost:3306
+-- Thời gian đã tạo: Th1 06, 2024 lúc 06:41 PM
+-- Phiên bản máy phục vụ: 8.0.30
+-- Phiên bản PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `url-shortify`
+-- Cơ sở dữ liệu: `url-shortify`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `links`
+-- Cấu trúc bảng cho bảng `links`
 --
 
 CREATE TABLE IF NOT EXISTS `links` (
@@ -34,13 +34,14 @@ CREATE TABLE IF NOT EXISTS `links` (
   `user_id` int UNSIGNED NOT NULL,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  KEY `USER ID` (`user_id`)
+  KEY `fk short url` (`short_url`),
+  KEY `fk user id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `link_views`
+-- Cấu trúc bảng cho bảng `link_views`
 --
 
 CREATE TABLE IF NOT EXISTS `link_views` (
@@ -49,6 +50,7 @@ CREATE TABLE IF NOT EXISTS `link_views` (
   `viewed_ips` json NOT NULL,
   `viewed_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date` date NOT NULL,
+  `views_count` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `link_id` (`short_url`),
   KEY `viewed_at` (`viewed_at`)
@@ -57,7 +59,7 @@ CREATE TABLE IF NOT EXISTS `link_views` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `users`
+-- Cấu trúc bảng cho bảng `users`
 --
 
 CREATE TABLE IF NOT EXISTS `users` (
@@ -71,7 +73,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `users`
+-- Đang đổ dữ liệu cho bảng `users`
 --
 
 INSERT INTO `users` (`id`, `username`, `email`, `password`, `role`, `created_at`) VALUES
@@ -79,14 +81,20 @@ INSERT INTO `users` (`id`, `username`, `email`, `password`, `role`, `created_at`
 (3, 'member', NULL, '$2y$10$iwAq6S0tzq7RCYC3yQpakumDTFZEuAJKy7tD4YopKr1UCHcSB6DDy', 0, '2024-01-03 23:15:51');
 
 --
--- Constraints for dumped tables
+-- Các ràng buộc cho các bảng đã đổ
 --
 
 --
--- Constraints for table `links`
+-- Các ràng buộc cho bảng `links`
 --
 ALTER TABLE `links`
-  ADD CONSTRAINT `USER ID` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk user id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT;
+
+--
+-- Các ràng buộc cho bảng `link_views`
+--
+ALTER TABLE `link_views`
+  ADD CONSTRAINT `fk short url link` FOREIGN KEY (`short_url`) REFERENCES `links` (`short_url`) ON DELETE CASCADE ON UPDATE RESTRICT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
