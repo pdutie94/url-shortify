@@ -88,22 +88,22 @@ function display_link_views( $shortUrl ) {
 	$currentMonth = date( 'Y-m' ); // Tháng hiện tại
 
 	// Hiển thị lượt xem cho ngày hiện tại
-	$dailyViewsQuery     = 'SELECT IFNULL(SUM(views_count), 0) as daily_views FROM link_views WHERE short_url = :shortUrl AND data = :currentDate';
+	$dailyViewsQuery     = 'SELECT IFNULL(SUM(views_count), 0) as daily_views FROM link_views WHERE short_url = :shortUrl AND date = :currentDate';
 	$dailyViewsStatement = $db->prepare( $dailyViewsQuery );
 	$dailyViewsStatement->bindParam( ':shortUrl', $shortUrl, PDO::PARAM_STR );
 	$dailyViewsStatement->bindParam( ':currentDate', $currentDate, PDO::PARAM_STR );
 	$dailyViewsStatement->execute();
 
-	echo 'Hôm nay: ' . $dailyViewsStatement->fetch( PDO::FETCH_ASSOC )['daily_views'] . ' lượt<br>';
+	echo 'Hôm nay: ' . $dailyViewsStatement->fetch( PDO::FETCH_ASSOC )['daily_views'] . '<br>';
 
 	// Hiển thị lượt xem cho tháng hiện tại
-	$monthlyViewsQuery     = "SELECT IFNULL(SUM(views_count), 0) as monthly_views FROM link_views WHERE short_url = :shortUrl AND DATE_FORMAT(data, '%Y-%m') = :currentMonth";
+	$monthlyViewsQuery     = "SELECT IFNULL(SUM(views_count), 0) as monthly_views FROM link_views WHERE short_url = :shortUrl AND DATE_FORMAT(date, '%Y-%m') = :currentMonth";
 	$monthlyViewsStatement = $db->prepare( $monthlyViewsQuery );
 	$monthlyViewsStatement->bindParam( ':shortUrl', $shortUrl, PDO::PARAM_STR );
 	$monthlyViewsStatement->bindParam( ':currentMonth', $currentMonth, PDO::PARAM_STR );
 	$monthlyViewsStatement->execute();
 
-	echo 'Tháng này: ' . $monthlyViewsStatement->fetch( PDO::FETCH_ASSOC )['monthly_views'] . ' lượt<br>';
+	echo 'Tháng này: ' . $monthlyViewsStatement->fetch( PDO::FETCH_ASSOC )['monthly_views'] . '<br>';
 
 	// Hiển thị tổng lượt xem toàn thời gian
 	$totalViewsQuery     = 'SELECT IFNULL(SUM(views_count), 0) as total_views FROM link_views WHERE short_url = :shortUrl';
@@ -111,7 +111,7 @@ function display_link_views( $shortUrl ) {
 	$totalViewsStatement->bindParam( ':shortUrl', $shortUrl, PDO::PARAM_STR );
 	$totalViewsStatement->execute();
 
-	echo 'Tất cả: ' . $totalViewsStatement->fetch( PDO::FETCH_ASSOC )['total_views'] . ' lượt';
+	echo 'Tất cả: ' . $totalViewsStatement->fetch( PDO::FETCH_ASSOC )['total_views'] . '';
 
 	$db = null;
 }
