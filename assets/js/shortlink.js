@@ -8,6 +8,40 @@ function afterSendRequest( form) {
     formBtn.removeAttribute("disabled")
 }
 
+function addNewRow( data ) {
+    // var tableRowContent = '<tr>'+
+    //                         '<td class="uk-text-nowrap">pdutie94</td>'+
+    //                         '<td class="uk-text-truncate">https://dribbble.com/shots/23350482-URL-shortener-Website</td>'+
+    //                         '<td class="uk-text-truncate">'+
+    //                             '<div class="uk-inline uk-width-1-1">'+
+    //                                 '<input value="http://url-shortify.test/jaJVRq" class="uk-input uk-form-medium short_url" style="padding-right: 40px" type="text" readonly="">'+
+    //                                 '<a class="short_link-copy uk-form-icon uk-form-icon-flip" uk-tooltip="title: Sao chép; pos: bottom-right" tabindex="0"><span uk-icon="icon: copy" class="uk-icon"></span></a>'+
+    //                             '</div>'+
+    //                         '</td>'+
+    //                         '<td class="uk-text-nowrap">07-01-2024 00:08:25</td>'+
+    //                     '</tr>'
+    // var tableTbody = document.querySelector('.table-list table tbody');
+    // var tableRowEl = document.createElement('tr')
+    // tableRowEl.innerHTML = tableRowContent
+    // tableTbody.appendChild(tableRowEl);
+    var tableBody = document.querySelector('.table-list table tbody')
+    var row = tableBody.insertRow(0)
+    row.classList.add('uk-animation-fade')
+    var c1 = row.insertCell(0)
+    var c2 = row.insertCell(1)
+    var c3 = row.insertCell(2)
+    var c4 = row.insertCell(3)
+    c1.classList.add('uk-text-nowrap')
+    c2.classList.add('uk-text-truncate')
+    c3.classList.add('uk-text-truncate')
+    c4.classList.add('uk-text-nowrap')
+
+    c1.innerHTML = data.username
+    c2.innerHTML = data.long_url
+    c3.innerHTML = '<div class="uk-inline uk-width-1-1"><input value="'+data.short_url+'" class="uk-input uk-form-medium short_url" style="padding-right: 40px" type="text" readonly=""><a class="short_link-copy uk-form-icon uk-form-icon-flip" uk-tooltip="title: Sao chép; pos: bottom-right" tabindex="0"><span uk-icon="icon: copy" class="uk-icon"></span></a></div>'
+    c4.innerHTML = data.created_at
+}
+
 document.addEventListener('DOMContentLoaded', function(event) {
     var shortLinkForm = document.querySelector('.form-short_link')
     var saveShortLinkForm = document.querySelector('.form-save-short_link')
@@ -52,8 +86,8 @@ document.addEventListener('DOMContentLoaded', function(event) {
             xhr.open(method, url, true)
             xhr.onreadystatechange = function () {
                 if ( xhr.readyState == 4 && xhr.status == 200 ) {
-                    var data = JSON.parse(xhr.response);
-                    if (data.success) {
+                    var res = JSON.parse(xhr.response);
+                    if (res.success) {
                         UIkit.modal('#short_link-popup').hide()
                         UIkit.notification({
                             message: 'Đã lưu thành công',
@@ -61,9 +95,10 @@ document.addEventListener('DOMContentLoaded', function(event) {
                             pos: 'bottom-right',
                             timeout: 3000
                         });
+                        addNewRow(res.data);
                     } else {
                         UIkit.notification({
-                            message: data.message,
+                            message: res.message,
                             status: 'danger',
                             pos: 'bottom-right',
                             timeout: 3000
