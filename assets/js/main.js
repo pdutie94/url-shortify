@@ -19,9 +19,12 @@ document.addEventListener(
 		if ( copyLinkTableList.length > 0 ) {
 			copyLinkTableList.forEach(
 				function ( copyLinkTableListBtn ) {
-					copyLinkTableListBtn.addEventListener('click', function() {
-						copyCmd( copyLinkTableListBtn.closest( 'td' ).querySelector( 'input.short_url' ) )
-					})
+					copyLinkTableListBtn.addEventListener(
+						'click',
+						function () {
+							copyCmd( copyLinkTableListBtn.closest( 'td' ).querySelector( 'input.short_url' ) )
+						}
+					)
 				}
 			)
 		}

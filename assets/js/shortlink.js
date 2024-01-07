@@ -25,9 +25,12 @@ function addNewRow( data ) {
 	c3.innerHTML = '<div class="uk-inline uk-width-1-1"><input value="' + data.short_url + '" class="uk-input uk-form-medium short_url" style="padding-right: 40px" type="text" readonly=""><a class="short_link-copy uk-form-icon uk-form-icon-flip" uk-tooltip="title: Sao chép; pos: bottom-right" tabindex="0"><span uk-icon="icon: copy" class="uk-icon"></span></a></div>'
 	c4.innerHTML = data.created_at
 
-	row.querySelector('.short_link-copy').addEventListener('click', function() {
-		copyCmd( row.querySelector( 'input.short_url' ) )
-	})
+	row.querySelector( '.short_link-copy' ).addEventListener(
+		'click',
+		function () {
+			copyCmd( row.querySelector( 'input.short_url' ) )
+		}
+	)
 }
 
 document.addEventListener(
@@ -107,9 +110,12 @@ document.addEventListener(
 				formData.append( 'action_name', 'save_short_url_id' )
 				xhr.send( formData )
 			}
-			copyShortLinkBtn.addEventListener('click', function() {
-				copyCmd( saveShortLinkForm.querySelector( 'input[name="short_url"]' ) )
-			})
+			copyShortLinkBtn.addEventListener(
+				'click',
+				function () {
+					copyCmd( saveShortLinkForm.querySelector( 'input[name="short_url"]' ) )
+				}
+			)
 		}
 	}
 )

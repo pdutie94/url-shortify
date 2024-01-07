@@ -1,5 +1,5 @@
 <?php
-require_once('models/user.php');
+require_once 'models/user.php';
 ?>
 <div class="uk-section uk-animation-fade">
 	<div class="uk-width-1-1">
@@ -36,20 +36,21 @@ require_once('models/user.php');
 						</thead>
 						<tbody>
 							<?php if ( count( $links ) > 0 ) { ?>
-								<?php foreach($links as $link) { 
-									$user = User::get_user_by_id($link['user_id']);
-									$date = date_create($link['created_at']);
+								<?php
+								foreach ( $links as $link ) {
+									$user = User::get_user_by_id( $link['user_id'] );
+									$date = date_create( $link['created_at'] );
 									?>
 									<tr>
-										<td class="uk-text-nowrap"><?= $user['username']; ?></td>
-										<td class="uk-text-truncate"><?= $link['long_url']; ?></td>
+										<td class="uk-text-nowrap"><?php echo $user['username']; ?></td>
+										<td class="uk-text-truncate"><?php echo $link['long_url']; ?></td>
 										<td class="uk-text-truncate">
 											<div class="uk-inline uk-width-1-1">
-												<input value="<?= SITE_URL . '/' . $link['short_url']; ?>" class="uk-input uk-form-medium short_url" style="padding-right: 40px" type="text" readonly>
+												<input value="<?php echo SITE_URL . '/' . $link['short_url']; ?>" class="uk-input uk-form-medium short_url" style="padding-right: 40px" type="text" readonly>
 												<a class="short_link-copy uk-form-icon uk-form-icon-flip" uk-tooltip="title: Sao chép; pos: bottom-right"><span uk-icon="icon: copy"></span></a>
 											</div>
 										</td>
-										<td class="uk-text-nowrap"><?= date_format($date,"d-m-Y H:i:s"); ?></td>
+										<td class="uk-text-nowrap"><?php echo date_format( $date, 'd-m-Y H:i:s' ); ?></td>
 									</tr>
 								<?php } ?>
 							<?php } ?>
@@ -60,23 +61,23 @@ require_once('models/user.php');
 	</div>
 </div>
 <div id="short_link-popup" class="uk-flex-middle" uk-modal>
-    <div class="uk-modal-dialog">
-        <div class="uk-modal-body uk-margin-auto-vertical">
-            <div class="uk-margin-small-bottom uk-text-left uk-text-success">Link rút gọn đã được tạo thành công!</div>
-            <form class="form-save-short_link">
-                <div class="form-control uk-margin uk-margin-remove-bottom">
-                    <div class="uk-inline uk-width-1-1">
-                        <input type="hidden" name="short_url_id" value="">
-                        <input type="hidden" name="long_url" value="">
-                        <input id="short_url" name="short_url" class="uk-input uk-form-medium short_url" type="text" readonly>
-                        <a class="short_link-copy uk-form-icon uk-form-icon-flip" uk-tooltip="title: Sao chép; pos: bottom-right"><span uk-icon="icon: copy"></span></a>
-                    </div>
-                </div>
-            </form>
-        </div>
-        <div class="uk-modal-footer uk-text-right">
-            <button class="uk-button uk-button-primary short_link-save" type="button">Lưu</button>
-            <button class="uk-button uk-button-default uk-modal-close" type="button">Hủy</button>
-        </div>
-    </div>
+	<div class="uk-modal-dialog">
+		<div class="uk-modal-body uk-margin-auto-vertical">
+			<div class="uk-margin-small-bottom uk-text-left uk-text-success">Link rút gọn đã được tạo thành công!</div>
+			<form class="form-save-short_link">
+				<div class="form-control uk-margin uk-margin-remove-bottom">
+					<div class="uk-inline uk-width-1-1">
+						<input type="hidden" name="short_url_id" value="">
+						<input type="hidden" name="long_url" value="">
+						<input id="short_url" name="short_url" class="uk-input uk-form-medium short_url" type="text" readonly>
+						<a class="short_link-copy uk-form-icon uk-form-icon-flip" uk-tooltip="title: Sao chép; pos: bottom-right"><span uk-icon="icon: copy"></span></a>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="uk-modal-footer uk-text-right">
+			<button class="uk-button uk-button-primary short_link-save" type="button">Lưu</button>
+			<button class="uk-button uk-button-default uk-modal-close" type="button">Hủy</button>
+		</div>
+	</div>
 </div>

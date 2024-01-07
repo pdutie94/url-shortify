@@ -16,12 +16,12 @@ class UserController extends BaseController {
 	}
 
 	public function stats() {
-		$data  = array();
+		$data = array();
 		$this->render( 'stats', $data );
 	}
 
 	public function edit() {
-		$data  = array();
+		$data = array();
 		$this->render( 'edit', $data );
 	}
 }

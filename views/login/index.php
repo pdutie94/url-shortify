@@ -1,18 +1,18 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'] . '/models/user.php');
+require_once $_SERVER['DOCUMENT_ROOT'] . '/models/user.php';
 
-if($_SERVER["REQUEST_METHOD"] == "POST") {
-    $username = trim($_POST['username']);
-    $password = $_POST['password'];
-    $user = User::get_user($username);
-    if( $user ) {
-        if ( password_verify( $password, $user['password'] ) ) {
-            // Login successful.
-            $_SESSION["logged_in"] = true;
-            $_SESSION["id"] = $user['id'];
-            $_SESSION["username"] = $username; 
+if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
+	$username = trim( $_POST['username'] );
+	$password = $_POST['password'];
+	$user     = User::get_user( $username );
+	if ( $user ) {
+		if ( password_verify( $password, $user['password'] ) ) {
+			// Login successful.
+			$_SESSION['logged_in'] = true;
+			$_SESSION['id']        = $user['id'];
+			$_SESSION['username']  = $username;
 
-            echo '<script>UIkit.notification({
+			echo '<script>UIkit.notification({
                 message: \'Đã đăng nhập thành công!<br>Đang chuyển hướng...\',
                 status: \'success\',
                 pos: \'bottom-right\',
@@ -20,17 +20,17 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
             });
             </script>';
 
-            header("location: " . SITE_URL);
-        }
-    } else {
-        echo '<script>UIkit.notification({
+			header( 'location: ' . SITE_URL );
+		}
+	} else {
+		echo '<script>UIkit.notification({
             message: \'Tài khoản hoặc mật khẩu không chính xác!\',
             status: \'danger\',
             pos: \'bottom-right\',
             timeout: 3000
         });
         </script>';
-    }
+	}
 }
 ?>
 <div class="uk-section uk-animation-fade uk-flex uk-flex-middle" uk-height-viewport>
