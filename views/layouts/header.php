@@ -15,16 +15,18 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/models/user.php';
 							<a href="<?php echo SITE_URL; ?>"><span class="uk-margin-small-right" uk-icon="home"></span>Dashboard</a>
 						</li>
 						<li class="menu-item">
-							<a href="<?php echo SITE_URL . '/index.php?controller=links'; ?>"><span class="uk-margin-small-right" uk-icon="link"></span>Tạo Link <span uk-navbar-parent-icon></span></a>
-							<div class="uk-navbar-dropdown">
-								<ul class="uk-nav uk-navbar-dropdown-nav">
-									<li><a href="<?php echo SITE_URL . '/index.php?controller=links&action=list'; ?>"><span class="uk-margin-small-right" uk-icon="list"></span>Danh sách Link</a></li>
-								</ul>
-							</div>
+							<a href="<?php echo SITE_URL . '/index.php?controller=links'; ?>"><span class="uk-margin-small-right" uk-icon="link"></span>Tạo Link</a>
 						</li>
-						<li class="menu-item">
-							<a href="<?php echo SITE_URL . '/index.php?controller=user'; ?>"><span class="uk-margin-small-right" uk-icon="users"></span>Thành viên</a>
-						</li>
+						<li class="menu-item"><a href="<?php echo SITE_URL . '/index.php?controller=links&action=list'; ?>"><span class="uk-margin-small-right" uk-icon="list"></span>Danh sách Link</a></li>
+						<?php if ( is_admin_user() ) { ?>
+							<li class="menu-item">
+								<a href="<?php echo SITE_URL . '/index.php?controller=user'; ?>"><span class="uk-margin-small-right" uk-icon="users"></span>Thành viên</a>
+							</li>
+						<?php } else { ?>
+							<li class="menu-item">
+								<a href="<?php echo SITE_URL . '/index.php?controller=user&action=edit&uid=' . User::get_current_user()['id']; ?>"><span class="uk-margin-small-right" uk-icon="user"></span>Hồ sơ</a>
+							</li>
+						<?php } ?>
 					</ul>
 					<a href="#" class="uk-navbar-toggle uk-hidden@s" uk-navbar-toggle-icon uk-toggle="target: #sidenav"></a>
 
@@ -58,16 +60,11 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/models/user.php';
 			<li class="menu-item uk-active">
 				<a href="<?php echo SITE_URL; ?>"><span class="uk-margin-small-right" uk-icon="home"></span>Dashboard</a>
 			</li>
-			<li class="menu-item uk-parent">
-                <a href="#"><span class="uk-margin-small-right" uk-icon="link"></span>Link rút gọn<span uk-nav-parent-icon></a>
-				<ul class="uk-nav-sub">
-					<li class="menu-item">
-                        <a href="<?php echo SITE_URL . '/index.php?controller=links'; ?>"><span class="uk-margin-small-right" uk-icon="plus"></span>Tạo Link</a>
-					</li>
-					<li class="menu-item">
-						<a href="<?php echo SITE_URL . '/index.php?controller=links&action=list'; ?>"><span class="uk-margin-small-right" uk-icon="list"></span>Danh sách Link</a>
-					</li>
-				</ul>
+			<li class="menu-item">
+				<a href="<?php echo SITE_URL . '/index.php?controller=links'; ?>"><span class="uk-margin-small-right" uk-icon="plus"></span>Tạo Link</a>
+			</li>
+			<li class="menu-item">
+				<a href="<?php echo SITE_URL . '/index.php?controller=links&action=list'; ?>"><span class="uk-margin-small-right" uk-icon="list"></span>Danh sách Link</a>
 			</li>
 			<li class="menu-item">
 				<a href="<?php echo SITE_URL . '/index.php?controller=user'; ?>"><span class="uk-margin-small-right" uk-icon="users"></span>Thành viên</a>

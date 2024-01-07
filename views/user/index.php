@@ -7,11 +7,12 @@
             <thead>
                 <tr>
                     <th class="uk-table-shrink">ID</th>
-                    <th class="uk-width-medium">Tên</th>
-                    <th class="uk-width-medium">Username</th>
-                    <th class="uk-width-medium">Email</th>
-                    <th class="uk-width-small">Vai trò</th>
-                    <th class="uk-width-small">Thời gian</th>
+                    <th style="min-width: 180px" class="uk-width-medium">Tên</th>
+                    <th style="min-width: 120px" class="uk-width-medium">Username</th>
+                    <th style="min-width: 200px" class="uk-width-medium">Email</th>
+                    <th style="min-width: 120px" class="uk-width-small">Vai trò</th>
+                    <th style="min-width: 120px" class="uk-width-small">Ngày tạo</th>
+                    <th style="min-width: 100px" class="uk-width-small"></th>
                 </tr>
             </thead>
             <tbody>
@@ -21,11 +22,18 @@
                         ?>
                         <tr>
                             <td class="uk-text-nowrap"><?= $user['id']; ?></td>
-                            <td class="uk-text-nowrap"></td>
+                            <td class="uk-text-nowrap"><?= $user['full_name']; ?></td>
                             <td class="uk-text-nowrap"><?= $user['username']; ?></td>
                             <td class="uk-text-truncate"><?= $user['email']; ?></td>
                             <td class="uk-text-nowrap"><?= $user['role'] == 1 ? 'Admin' : 'Thành viên' ; ?></td>
-                            <td class="uk-text-nowrap"><?= date_format($date,"d-m-Y H:i:s"); ?></td>
+                            <td class="uk-text-nowrap"><?= date_format($date,"d-m-Y"); ?></td>
+                            <td class="uk-text-nowrap">
+                                <div>
+                                    <a uk-tooltip="title: Chỉnh sửa thông tin" href="<?php echo SITE_URL . '/index.php?controller=user&action=edit&uid=' . $user['id']; ?>" class="uk-icon-link uk-margin-small-right" uk-icon="file-edit"></a>
+                                    <a uk-tooltip="title: Xem thống kê chi tiết" href="<?php echo SITE_URL . '/index.php?controller=user&action=stats&uid=' . $user['id']; ?>" class="uk-icon-link uk-margin-small-right" uk-icon="bolt"></a>
+                                    <a uk-tooltip="title: Xóa thành viên" href="#" class="uk-icon-link" uk-icon="trash"></a>
+                                </div>
+                            </td>
                         </tr>
                     <?php } ?>
                 <?php } ?>
@@ -33,11 +41,12 @@
             <tfoot>
                 <tr>
                     <th class="uk-table-shrink">ID</th>
-                    <th class="uk-width-medium">Tên</th>
-                    <th class="uk-width-medium">Username</th>
-                    <th class="uk-width-medium">Email</th>
-                    <th class="uk-width-small">Vai trò</th>
-                    <th class="uk-width-small">Thời gian</th>
+                    <th style="min-width: 180px" class="uk-width-medium">Tên</th>
+                    <th style="min-width: 120px" class="uk-width-medium">Username</th>
+                    <th style="min-width: 200px" class="uk-width-medium">Email</th>
+                    <th class="uk-width-small" style="min-width: 120px">Vai trò</th>
+                    <th style="min-width: 120px" class="uk-width-small">Ngày tạo</th>
+                    <th style="min-width: 100px" class="uk-width-small"></th>
                 </tr>
             </tfoot>
         </table>

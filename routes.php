@@ -2,8 +2,8 @@
 $controllers = array(
 	'dashboard' => array( 'index', 'error' ),
 	'login'     => array( 'index', 'logout' ),
-	'user'      => array( 'index' ),
-	'links'     => array( 'index', 'list' ),
+	'user'      => array( 'index', 'stats', 'edit' ),
+	'links'     => array( 'index', 'list', 'view' ),
 ); // Các controllers trong hệ thống và các action có thể gọi ra từ controller đó.
 
 // Nếu các tham số nhận được từ URL không hợp lệ (không thuộc list controller và action có thể gọi

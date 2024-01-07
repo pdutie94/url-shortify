@@ -15,8 +15,6 @@ if (! isset($_GET['u'])) {
     <title><?= $title ?></title>
     <link rel="stylesheet" href="<?= SITE_URL ?>/assets/uikit/css/uikit.min.css">
     <link rel="stylesheet" href="<?= SITE_URL ?>/assets/css/main.css">
-    <script src="<?= SITE_URL ?>/assets/uikit/js/uikit.min.js"></script>
-    <script src="<?= SITE_URL ?>/assets/uikit/js/uikit-icons.min.js"></script>
 </head>
 
 <body>
@@ -32,6 +30,9 @@ if (! isset($_GET['u'])) {
         <?php include_once('footer.php'); ?>
     <?php } ?>
 
+    
+    <script src="<?= SITE_URL ?>/assets/uikit/js/uikit.min.js"></script>
+    <script src="<?= SITE_URL ?>/assets/uikit/js/uikit-icons.min.js"></script>
     <script src="<?= SITE_URL ?>/assets/js/main.js"></script>
     
     <?php if( isset($_GET['controller']) ) { ?>

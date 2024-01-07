@@ -14,4 +14,14 @@ class UserController extends BaseController {
 		$data  = array( 'users' => $users );
 		$this->render( 'index', $data );
 	}
+
+	public function stats() {
+		$data  = array();
+		$this->render( 'stats', $data );
+	}
+
+	public function edit() {
+		$data  = array();
+		$this->render( 'edit', $data );
+	}
 }
