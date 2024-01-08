@@ -1,7 +1,10 @@
 
 
 <div class="uk-section uk-animation-fade">
-	<h3 class="uk-margin-small-bottom">Danh sách thành viên</h3>
+	<div class="page-header uk-margin-small-bottom">
+		<h3 class="uk-margin-small-bottom">Danh sách thành viên</h3>
+		<a href="<?php echo SITE_URL . '/index.php?controller=user&action=create'; ?>" class="uk-button uk-button-primary uk-button-small">Tạo tài khoản</a>
+	</div>
 	<div class="uk-overflow-auto">
 		<table class="uk-table uk-table-middle uk-table-divider" style="max-height: 500px; overflow-y: auto">
 			<thead>

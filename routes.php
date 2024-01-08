@@ -2,7 +2,7 @@
 $controllers = array(
 	'dashboard' => array( 'index', 'error' ),
 	'login'     => array( 'index', 'logout' ),
-	'user'      => array( 'index', 'stats', 'edit' ),
+	'user'      => array( 'index', 'stats', 'create', 'edit' ),
 	'links'     => array( 'index', 'list', 'view' ),
 ); // Các controllers trong hệ thống và các action có thể gọi ra từ controller đó.
 

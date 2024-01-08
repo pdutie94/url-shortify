@@ -1,6 +1,10 @@
 <?php
-$user_id = filter_var( $_GET['uid'], FILTER_VALIDATE_INT );
-$user    = User::get_user_by_id( $user_id );
+$user_id   = filter_var( $_GET['uid'], FILTER_VALIDATE_INT );
+$curr_user = User::get_current_user();
+if ( ! is_admin_user() && $curr_user['id'] !== $user_id ) {
+	header( 'Location: ' . SITE_URL );
+}
+$user = User::get_user_by_id( $user_id );
 
 $errors  = array();
 $notices = array();
@@ -51,8 +55,15 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 }
 ?>
 
+<?php if ( isset( $_GET['error'] ) && 'access_deny' === $_GET['error'] ) { ?>
+	<div class="notices-wrapper uk-alert-danger uk-margin-top" uk-alert>
+		<div class="uk-text-danger">Bạn không có quyền truy cập vào trang vừa rồi!</div>
+	</div>
+<?php } ?>
 <div class="uk-section uk-animation-fade">
-	<h3 class="uk-margin-small-bottom">Chỉnh sửa thông tin</h3>
+	<div class="page-header">
+		<h3 class="uk-margin-small-bottom">Chỉnh sửa thông tin</h3>
+	</div>
 	<div class="content-body">
 		<?php if ( ! empty( $notices ) ) { ?>
 			<div class="notices-wrapper uk-alert-success" uk-alert>

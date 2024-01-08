@@ -10,7 +10,8 @@
 					<th class="uk-table-expand" style="min-width: 300px;">Link đích</th>
 					<th class="uk-width-medium" style="min-width: 300px;">Link rút gọn</th>
 					<th class="uk-width-small" style="min-width: 180px;">Thời gian</th>
-					<th class="uk-width-small" style="min-width: 180px;">Thống kê</th>
+					<th class="uk-width-small" style="min-width: 180px;">Lượt xem</th>
+					<th class="uk-width-shrink">&nbsp;</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -31,6 +32,12 @@
 							</td>
 							<td class="uk-text-nowrap"><?php echo date_format( $date, 'd-m-Y H:i:s' ); ?></td>
 							<td><?php display_link_views( $link['short_url'] ); ?></td>
+							<td class="uk-text-nowrap">
+								<div>
+									<a uk-tooltip="title: Xem thống kê chi tiết" href="<?php echo SITE_URL . '/index.php?controller=user&action=stats&uid=' . $user['id']; ?>" class="uk-icon-link uk-margin-small-right" uk-icon="bolt"></a>
+									<a uk-tooltip="title: Xóa thành viên" href="#" class="uk-icon-link" uk-icon="trash"></a>
+								</div>
+							</td>
 						</tr>
 					<?php } ?>
 				<?php } ?>
@@ -41,7 +48,8 @@
 					<th class="uk-table-expand" style="min-width: 300px;">Link đích</th>
 					<th class="uk-width-medium" style="min-width: 300px;">Link rút gọn</th>
 					<th class="uk-width-small" style="min-width: 180px;">Thời gian</th>
-					<th class="uk-width-small" style="min-width: 180px;">Thống kê</th>
+					<th class="uk-width-small" style="min-width: 180px;">Lượt xem</th>
+					<th class="uk-width-shrink">&nbsp;</th>
 				</tr>
 			</tfoot>
 		</table>

@@ -10,6 +10,11 @@ class UserController extends BaseController {
 	}
 
 	public function index() {
+		if ( ! is_admin_user() ) {
+			$user = User::get_current_user();
+			header( 'location: ' . SITE_URL . '/index.php?controller=user&action=edit&uid=' . intval( $user['id'] ) . '&error=access_deny' );
+			exit();
+		}
 		$users = User::all( 20 );
 		$data  = array( 'users' => $users );
 		$this->render( 'index', $data );
@@ -23,5 +28,10 @@ class UserController extends BaseController {
 	public function edit() {
 		$data = array();
 		$this->render( 'edit', $data );
+	}
+
+	public function create() {
+		$data = array();
+		$this->render( 'create', $data );
 	}
 }
