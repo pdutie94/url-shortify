@@ -44,6 +44,21 @@ class User {
 		return $user;
 	}
 
+	public static function get_user_avatar($size = array(), $id = null) {
+		if ( empty($size) ) {
+			$size = array('40px', '40px');
+		}
+		$user_id = $id == null ? $_SESSION['id'] : $id;
+		$sql  = 'SELECT avatar_path FROM users WHERE id=:id';
+		$user_avatar_path = DB::fetchColumn( $sql, array( ':id' => $user_id ) );
+		$avatar_url = SITE_URL. '/uploads/avatars/default_avatar.png';
+		if ($user_avatar_path != null) {
+			$avatar_url = SITE_URL. '/' .$user_avatar_path;
+		}
+
+		return '<img src="'.htmlspecialchars($avatar_url, ENT_QUOTES, 'UTF-8').'" class="uk-object-cover uk-border-circle" style="width: '.$size[0].'; height: '.$size[1].';">';
+	}
+
 	public static function pagination( $limit = 20 ) {
 		$curr_page = isset( $_GET['page'] ) ? intval( $_GET['page'] ) : 1;
 		$per_page  = $limit;

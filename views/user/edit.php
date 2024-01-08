@@ -1,10 +1,5 @@
 <?php
 $user_id   = filter_var( $_GET['uid'], FILTER_VALIDATE_INT );
-$curr_user = User::get_current_user();
-if ( ! is_admin_user() && $curr_user['id'] !== $user_id ) {
-	header( 'Location: ' . SITE_URL );
-}
-$user = User::get_user_by_id( $user_id );
 
 $errors  = array();
 $notices = array();
@@ -15,6 +10,7 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 	$email            = $_POST['email'];
 	$new_password     = $_POST['new_password'];
 	$confirm_password = $_POST['confirm_password'];
+	$avatar_upload_check = false;
 
 	// Kiểm tra mật khẩu mới và mật khẩu xác nhận khớp nhau
 	if ( $new_password !== $confirm_password ) {
@@ -27,6 +23,21 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 			// Nếu mật khẩu mới được nhập, thì cập nhật mật khẩu
 			if ( ! empty( $new_password ) ) {
 				$sql .= ', password = :password';
+			}
+			
+			// Nếu avatar được chọn thì cập nhật avatar.
+			if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] === UPLOAD_ERR_OK) {
+				$uploadDir = 'uploads/avatars/';
+				$uploadPath = $uploadDir . basename($_FILES['avatar']['name']);
+		
+				// Kiểm tra và chuyển ảnh vào thư mục
+				if ($avatar_upload_check = move_uploaded_file($_FILES['avatar']['tmp_name'], $uploadPath)) {
+					// Lưu đường dẫn vào cơ sở dữ liệu
+					$avatar_path = $uploadPath;
+					$sql .= ', avatar_path = :avatar_path';
+				} else {
+					$errors[] = "Lỗi khi tải lên ảnh đại diện.";
+				}
 			}
 
 			$sql .= ' WHERE id = :id';
@@ -42,6 +53,9 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 				$hashed_password = password_hash( $new_password, PASSWORD_DEFAULT );
 				$stmt->bindParam( ':password', $hashed_password, PDO::PARAM_STR );
 			}
+			if ( $avatar_upload_check ) {
+				$stmt->bindParam( ':avatar_path', $avatar_path, PDO::PARAM_STR );
+			}
 
 			if ( $stmt->execute() ) {
 				$notices[] = 'Cập nhật thông tin người dùng thành công.';
@@ -53,6 +67,8 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 		}
 	}
 }
+
+$user = User::get_user_by_id( $user_id );
 ?>
 
 <?php if ( isset( $_GET['error'] ) && 'access_deny' === $_GET['error'] ) { ?>
@@ -83,9 +99,21 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 				</ul>
 			</div>
 		<?php } ?>
-		<form class="uk-form-stacked" method="post">
+		<form class="uk-form-stacked" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="user_id" value="<?php echo $user['id']; ?>">
+
+			<div id="avatar_preview_wrapper">
+				<img id="avatarPreview" src="<?php echo $user['avatar_path'] != null ? $user['avatar_path'] : 'uploads/avatars/default_avatar.png'; ?>" alt="Preview" class="uk-object-cover uk-border-circle" style="width: 150px; height: 150px;">
+			</div>
 			
+			<div class="uk-margin">
+				<label class="uk-form-label" for="avatar">Ảnh đại diện</label>
+				<div class="uk-form-custom">
+					<input type="file" name="avatar" id="avatarInput" accept="image/*" onchange="previewImage()">
+					<button class="uk-button uk-button-default" type="button" tabindex="-1">Chọn ảnh</button>
+				</div>
+			</div>
+
 			<div class="uk-margin">
 				<label class="uk-form-label" for="username">Username</label>
 				<div class="uk-form-controls">
@@ -127,3 +155,22 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 		</form>
 	</div>
 </div>
+<script>
+function previewImage() {
+    var input = document.getElementById('avatarInput');
+    var preview = document.getElementById('avatarPreview');
+
+    // Kiểm tra xem có tệp tin nào được chọn không
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function(e) {
+            preview.src = e.target.result;
+        };
+
+        reader.readAsDataURL(input.files[0]);
+    } else {
+        preview.src = 'uploads/avatars/default_avatar.png'; // Đặt lại ảnh xem trước nếu không có ảnh nào được chọn
+    }
+}
+</script>

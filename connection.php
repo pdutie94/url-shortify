@@ -30,6 +30,13 @@ class DB {
 		return $data;
 	}
 
+	public static function fetchColumn( $query, $params = array() ) {
+		$stmt = self::getInstance()->prepare( $query );
+		$data = $stmt->execute( $params );
+		$data = $stmt->fetchColumn();
+		return $data;
+	}
+
 	public static function fetchAll( $query, $params = array() ) {
 		$stmt = self::getInstance()->prepare( $query );
 		$data = $stmt->execute( $params );

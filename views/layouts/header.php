@@ -38,8 +38,8 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/models/user.php';
 						$user = User::get_current_user();
 						?>
 						<div class="uk-navbar-item">
-							<div class="uk-flex-inline uk-flex-middle" style="gap: 4px;">
-								<span uk-icon="user"></span><span><?php echo $user['username']; ?>,</span> <a href="<?php echo SITE_URL; ?>/index.php?controller=login&action=logout">Thoát</a>
+							<div class="uk-flex-inline uk-flex-middle" style="gap: 20px;">
+								<a class="uk-flex-inline uk-flex-middle" href="<?php echo SITE_URL . '/index.php?controller=user&action=edit&uid=' . $user['id']; ?>"> <?php echo User::get_user_avatar(); ?><span class="uk-margin-small-left"><?php echo $user['username']; ?></a></span> <a href="<?php echo SITE_URL; ?>/index.php?controller=login&action=logout"><span uk-icon="sign-out"></span></a>
 							</div>
 						</div>
 					<?php } else { ?>

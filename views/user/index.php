@@ -10,6 +10,7 @@
 			<thead>
 				<tr>
 					<th class="uk-table-shrink">ID</th>
+					<th class="uk-table-shrink" class="uk-width-medium">Avatar</th>
 					<th style="min-width: 180px" class="uk-width-medium">Tên</th>
 					<th style="min-width: 120px" class="uk-width-medium">Username</th>
 					<th style="min-width: 200px" class="uk-width-medium">Email</th>
@@ -26,6 +27,7 @@
 						?>
 						<tr>
 							<td class="uk-text-nowrap"><?php echo $user['id']; ?></td>
+							<td class="uk-text-nowrap"><?php echo User::get_user_avatar(array('50px', '50px'), $user['id']); ?></td>
 							<td class="uk-text-nowrap"><?php echo $user['full_name']; ?></td>
 							<td class="uk-text-nowrap"><?php echo $user['username']; ?></td>
 							<td class="uk-text-truncate"><?php echo $user['email']; ?></td>
@@ -45,6 +47,7 @@
 			<tfoot>
 				<tr>
 					<th class="uk-table-shrink">ID</th>
+					<th class="uk-table-shrink" class="uk-width-medium">Avatar</th>
 					<th style="min-width: 180px" class="uk-width-medium">Tên</th>
 					<th style="min-width: 120px" class="uk-width-medium">Username</th>
 					<th style="min-width: 200px" class="uk-width-medium">Email</th>

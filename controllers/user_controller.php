@@ -26,11 +26,19 @@ class UserController extends BaseController {
 	}
 
 	public function edit() {
+		$user_id   = filter_var( $_GET['uid'], FILTER_VALIDATE_INT );
+		$curr_user = User::get_current_user();
+		if ( ! is_admin_user() && $curr_user['id'] !== $user_id ) {
+			header( 'Location: ' . SITE_URL );
+		}
 		$data = array();
 		$this->render( 'edit', $data );
 	}
 
 	public function create() {
+		if ( ! is_admin_user() ) {
+			header( 'Location: ' . SITE_URL );
+		}
 		$data = array();
 		$this->render( 'create', $data );
 	}
