@@ -27,7 +27,7 @@
 						?>
 						<tr>
 							<td class="uk-text-nowrap"><?php echo $user['id']; ?></td>
-							<td class="uk-text-nowrap"><?php echo User::get_user_avatar(array('50px', '50px'), $user['id']); ?></td>
+							<td class="uk-text-nowrap"><?php echo User::get_user_avatar( array( '50px', '50px' ), $user['id'] ); ?></td>
 							<td class="uk-text-nowrap"><?php echo $user['full_name']; ?></td>
 							<td class="uk-text-nowrap"><?php echo $user['username']; ?></td>
 							<td class="uk-text-truncate"><?php echo $user['email']; ?></td>

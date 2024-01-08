@@ -1,15 +1,15 @@
 <?php
-$user_id   = filter_var( $_GET['uid'], FILTER_VALIDATE_INT );
+$user_id = filter_var( $_GET['uid'], FILTER_VALIDATE_INT );
 
 $errors  = array();
 $notices = array();
 // Xử lý dữ liệu từ biểu mẫu chỉnh sửa
 if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
-	$db               = DB::getInstance();
-	$full_name        = $_POST['full_name'];
-	$email            = $_POST['email'];
-	$new_password     = $_POST['new_password'];
-	$confirm_password = $_POST['confirm_password'];
+	$db                  = DB::getInstance();
+	$full_name           = $_POST['full_name'];
+	$email               = $_POST['email'];
+	$new_password        = $_POST['new_password'];
+	$confirm_password    = $_POST['confirm_password'];
 	$avatar_upload_check = false;
 
 	// Kiểm tra mật khẩu mới và mật khẩu xác nhận khớp nhau
@@ -24,19 +24,19 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 			if ( ! empty( $new_password ) ) {
 				$sql .= ', password = :password';
 			}
-			
+
 			// Nếu avatar được chọn thì cập nhật avatar.
-			if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] === UPLOAD_ERR_OK) {
-				$uploadDir = 'uploads/avatars/';
-				$uploadPath = $uploadDir . basename($_FILES['avatar']['name']);
-		
+			if ( isset( $_FILES['avatar'] ) && $_FILES['avatar']['error'] === UPLOAD_ERR_OK ) {
+				$uploadDir  = 'uploads/avatars/';
+				$uploadPath = $uploadDir . basename( $_FILES['avatar']['name'] );
+
 				// Kiểm tra và chuyển ảnh vào thư mục
-				if ($avatar_upload_check = move_uploaded_file($_FILES['avatar']['tmp_name'], $uploadPath)) {
+				if ( $avatar_upload_check = move_uploaded_file( $_FILES['avatar']['tmp_name'], $uploadPath ) ) {
 					// Lưu đường dẫn vào cơ sở dữ liệu
 					$avatar_path = $uploadPath;
-					$sql .= ', avatar_path = :avatar_path';
+					$sql        .= ', avatar_path = :avatar_path';
 				} else {
-					$errors[] = "Lỗi khi tải lên ảnh đại diện.";
+					$errors[] = 'Lỗi khi tải lên ảnh đại diện.';
 				}
 			}
 
@@ -157,20 +157,20 @@ $user = User::get_user_by_id( $user_id );
 </div>
 <script>
 function previewImage() {
-    var input = document.getElementById('avatarInput');
-    var preview = document.getElementById('avatarPreview');
+	var input = document.getElementById('avatarInput');
+	var preview = document.getElementById('avatarPreview');
 
-    // Kiểm tra xem có tệp tin nào được chọn không
-    if (input.files && input.files[0]) {
-        var reader = new FileReader();
+	// Kiểm tra xem có tệp tin nào được chọn không
+	if (input.files && input.files[0]) {
+		var reader = new FileReader();
 
-        reader.onload = function(e) {
-            preview.src = e.target.result;
-        };
+		reader.onload = function(e) {
+			preview.src = e.target.result;
+		};
 
-        reader.readAsDataURL(input.files[0]);
-    } else {
-        preview.src = 'uploads/avatars/default_avatar.png'; // Đặt lại ảnh xem trước nếu không có ảnh nào được chọn
-    }
+		reader.readAsDataURL(input.files[0]);
+	} else {
+		preview.src = 'uploads/avatars/default_avatar.png'; // Đặt lại ảnh xem trước nếu không có ảnh nào được chọn
+	}
 }
 </script>
