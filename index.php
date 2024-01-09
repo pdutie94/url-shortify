@@ -9,21 +9,6 @@ require_once 'connection.php';
 require_once 'helper.php';
 
 if ( isset( $_GET['u'] ) ) {
-	?>
-	<!DOCTYPE html>
-	<html lang="en">
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="canonical" href="<?php echo SITE_URL; ?>">
-		<meta property="og:url" content="<?php echo SITE_URL; ?>">
-		<meta property="og:title" content="Flatsomix">
-		<title>Redirecting...</title>
-	</head>
-	<body>
-	</body>
-	</html>
-	<?php
 	$db = DB::getInstance();
 	$u  = filter_var( $_GET['u'] );
 
@@ -42,8 +27,10 @@ if ( isset( $_GET['u'] ) ) {
 		$ip_address = $_SERVER['REMOTE_ADDR'];
 		$link_id    = filter_var( $_GET['u'] );
 		$check      = update_link_views( $link_id, $ip_address );
-
-		echo '<script>window.location.href = "' . $long_url . '";</script>';
+		
+		if ( $check ) {
+			header('location: '. $long_url);
+		}
 	}
 
 	die();
