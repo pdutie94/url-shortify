@@ -59,6 +59,71 @@ class User {
 		return '<img src="' . htmlspecialchars( $avatar_url, ENT_QUOTES, 'UTF-8' ) . '" class="uk-object-cover uk-border-circle" style="width: ' . $size[0] . '; height: ' . $size[1] . ';">';
 	}
 
+	public static function get_view_in_day( $user_id ) {
+		$db = DB::getInstance();
+		// Ngày hiện tại
+		$curr_day = date( 'Y-m-d' );
+
+		// Truy vấn lấy tổng số lượt xem của các link của user trong ngày hiện tại
+		$query = '
+			SELECT SUM(link_views.views_count) AS total_views
+			FROM link_views
+			JOIN links ON link_views.short_url = links.short_url
+			WHERE links.user_id = :userId
+			AND DATE(link_views.date) = :curr_day;
+		';
+
+		$stmt = $db->prepare( $query );
+		$stmt->bindParam( ':user_id', $user_id, PDO::PARAM_INT );
+		$stmt->bindParam( ':curr_day', $curr_day );
+		$stmt->execute();
+
+		$result = $stmt->fetch( PDO::FETCH_ASSOC );
+
+		// Hiển thị tổng số lượt xem của user trong ngày hiện tại
+		return $result['total_views'] == null ? 0 : $result['total_views'];
+	}
+
+	public static function get_total_view( $user_id ) {
+		$db    = DB::getInstance();
+		$query = '
+			SELECT SUM(link_views.views_count) AS total_views
+			FROM link_views
+			JOIN links ON link_views.short_url = links.short_url
+			WHERE links.user_id = :userId;
+		';
+
+		$stmt = $db->prepare( $query );
+		$stmt->bindParam( ':userId', $user_id, PDO::PARAM_INT );
+		$stmt->execute();
+
+		$result = $stmt->fetch( PDO::FETCH_ASSOC );
+
+		// Hiển thị tổng số lượt xem toàn thời gian của user
+		return $result['total_views'] == null ? 0 : $result['total_views'];
+	}
+
+	public static function get_view_in_month( $user_id, $date = '' ) {
+		$db    = DB::getInstance();
+		$query = '
+			SELECT SUM(link_views.views_count) AS total_views
+			FROM link_views
+			JOIN links ON link_views.short_url = links.short_url
+			WHERE links.user_id = :userId
+			AND YEAR(link_views.date) = YEAR(CURRENT_DATE)
+			AND MONTH(link_views.date) = MONTH(CURRENT_DATE);
+		';
+
+		$stmt = $db->prepare( $query );
+		$stmt->bindParam( ':userId', $user_id, PDO::PARAM_INT );
+		$stmt->execute();
+
+		$result = $stmt->fetch( PDO::FETCH_ASSOC );
+
+		// Hiển thị tổng số lượt xem
+		return $result['total_views'] == null ? 0 : $result['total_views'];
+	}
+
 	public static function pagination( $limit = 20 ) {
 		$curr_page = isset( $_GET['page'] ) ? intval( $_GET['page'] ) : 1;
 		$per_page  = $limit;

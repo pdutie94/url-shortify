@@ -21,7 +21,18 @@ class UserController extends BaseController {
 	}
 
 	public function stats() {
-		$data = array();
+		if ( ! isset( $_GET['uid'] ) ) {
+			header( 'location:' . SITE_URL );
+		}
+		$user_id            = intval( $_GET['uid'] );
+		$view_in_day        = User::get_view_in_month( $user_id );
+		$view_in_curr_month = User::get_view_in_month( $user_id );
+		$total_view         = User::get_total_view( $user_id );
+		$data               = array(
+			'total_view'    => $total_view,
+			'view_in_month' => $view_in_curr_month,
+			'view_in_day'   => $view_in_day,
+		);
 		$this->render( 'stats', $data );
 	}
 
