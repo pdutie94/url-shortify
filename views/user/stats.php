@@ -1,6 +1,6 @@
 <?php
 $user       = User::get_user_by_id( intval( $_GET['uid'] ) );
-$curr_month = date( 'n' );
+$curr_month = date( 'm' );
 $curr_year  = date( 'Y' );
 ?>
 
@@ -20,7 +20,7 @@ $curr_year  = date( 'Y' );
 			<div>
 				<div class="uk-card uk-card-default uk-card-body uk-padding-small uk-text-left">
 					<div class="uk-card-title uk-text-default uk-margin-small-bottom uk-text-uppercase">Lượt xem tháng <?php echo $curr_month; ?>/<?php echo $curr_year; ?></div>
-					<div class="card-number uk-text-large uk-text-bold"><?php echo $view_in_day; ?></div>
+					<div class="card-number uk-text-large uk-text-bold"><?php echo $view_in_month; ?></div>
 				</div>
 			</div>
 			<div>

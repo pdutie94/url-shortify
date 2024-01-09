@@ -69,7 +69,7 @@ class User {
 			SELECT SUM(link_views.views_count) AS total_views
 			FROM link_views
 			JOIN links ON link_views.short_url = links.short_url
-			WHERE links.user_id = :userId
+			WHERE links.user_id = :user_id
 			AND DATE(link_views.date) = :curr_day;
 		';
 
