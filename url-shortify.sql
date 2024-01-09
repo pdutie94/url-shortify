@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Máy chủ: localhost:3306
--- Thời gian đã tạo: Th1 06, 2024 lúc 06:41 PM
--- Phiên bản máy phục vụ: 8.0.30
--- Phiên bản PHP: 8.2.12
+-- Host: localhost:3306
+-- Generation Time: Jan 09, 2024 at 06:06 PM
+-- Server version: 8.0.30
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Cơ sở dữ liệu: `url-shortify`
+-- Database: `url-shortify`
 --
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `links`
+-- Table structure for table `links`
 --
 
 CREATE TABLE IF NOT EXISTS `links` (
@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS `links` (
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `link_views`
+-- Table structure for table `link_views`
 --
 
 CREATE TABLE IF NOT EXISTS `link_views` (
@@ -59,39 +59,40 @@ CREATE TABLE IF NOT EXISTS `link_views` (
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `users`
+-- Table structure for table `users`
 --
 
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
   `username` varchar(30) COLLATE utf8mb4_general_ci NOT NULL,
+  `full_name` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `avatar_path` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `email` varchar(250) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `password` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `role` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1: Admin, 0: Member',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `users`
+-- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `username`, `email`, `password`, `role`, `created_at`) VALUES
-(1, 'pdutie94', 'pdutie94@gmail.com', '$2y$10$H4IZsdzrGYqwI78tbl5p/.kgedsuQxGdK1rYRAl5FuhHEXJHwV962', 1, '2024-01-02 21:59:09'),
-(3, 'member', NULL, '$2y$10$iwAq6S0tzq7RCYC3yQpakumDTFZEuAJKy7tD4YopKr1UCHcSB6DDy', 0, '2024-01-03 23:15:51');
+INSERT INTO `users` (`id`, `username`, `full_name`, `email`, `password`, `role`, `created_at`, `avatar_path`) VALUES
+(1, 'admin', 'Phạm Đức Tiến', 'pdutie94@gmail.com', '$2a$12$b1UV3VotFLGXKYdPEY.7qu7yfvS.Xnh5F3Y/p4W.UscJUJhYlS79i', 1, '2024-01-10 01:05:55', NULL);
 
 --
--- Các ràng buộc cho các bảng đã đổ
+-- Constraints for dumped tables
 --
 
 --
--- Các ràng buộc cho bảng `links`
+-- Constraints for table `links`
 --
 ALTER TABLE `links`
   ADD CONSTRAINT `fk user id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT;
 
 --
--- Các ràng buộc cho bảng `link_views`
+-- Constraints for table `link_views`
 --
 ALTER TABLE `link_views`
   ADD CONSTRAINT `fk short url link` FOREIGN KEY (`short_url`) REFERENCES `links` (`short_url`) ON DELETE CASCADE ON UPDATE RESTRICT;
