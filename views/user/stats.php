@@ -10,7 +10,7 @@ $curr_year  = date( 'Y' );
 	</div>
 	<div class="content-body">
 		<div class="charts-wrapper">
-		<div class="uk-child-width-expand@s uk-text-center" uk-grid>
+		<div class="uk-child-width-expand@m uk-text-center" uk-grid>
 			<div>
 				<div class="uk-card uk-card-default uk-card-body uk-padding-small uk-text-left">
 					<div class="uk-card-title uk-text-default uk-margin-small-bottom uk-text-uppercase">Lượt xem hôm nay</div>

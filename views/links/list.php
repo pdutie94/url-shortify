@@ -11,7 +11,7 @@
 					<th class="uk-width-medium" style="min-width: 300px;">Link rút gọn</th>
 					<th class="uk-width-small" style="min-width: 180px;">Thời gian</th>
 					<th class="uk-width-small" style="min-width: 180px;">Lượt xem</th>
-					<th class="uk-width-shrink">&nbsp;</th>
+					<th class="uk-width-small" style="min-width: 100px;">&nbsp;</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -49,7 +49,7 @@
 					<th class="uk-width-medium" style="min-width: 300px;">Link rút gọn</th>
 					<th class="uk-width-small" style="min-width: 180px;">Thời gian</th>
 					<th class="uk-width-small" style="min-width: 180px;">Lượt xem</th>
-					<th class="uk-width-shrink">&nbsp;</th>
+					<th class="uk-width-small" style="min-width: 100px;">&nbsp;</th>
 				</tr>
 			</tfoot>
 		</table>

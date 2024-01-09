@@ -49,10 +49,11 @@ function update_link_views( $link_id, $ip_address ) {
 			$last_date    = $result['date'];
 
 			if ( $last_date != $current_date ) {
+				$view_count = 1;
 				$stmt_insert = $db->prepare( 'INSERT INTO link_views (short_url, views_count, viewed_ips, date) VALUES (:short_url, :views_count, :viewed_ips, :current_date)' );
 				$stmt_insert->bindParam( ':short_url', $link_id, PDO::PARAM_STR );
-				$stmt_insert->bindParam( ':views_count', $views_count, PDO::PARAM_INT );
-				$stmt_insert->bindParam( ':viewed_ips', $json_viewed_ips, PDO::PARAM_STR );
+				$stmt_insert->bindParam( ':views_count', $view_count, PDO::PARAM_INT );
+				$stmt_insert->bindParam( ':viewed_ips', json_encode( $viewed_ips ), PDO::PARAM_STR );
 				$stmt_insert->bindParam( ':current_date', $current_date, PDO::PARAM_STR );
 				$stmt_insert->execute();
 			} else {
