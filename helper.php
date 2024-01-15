@@ -36,6 +36,7 @@ function update_link_views( $link_id, $ip_address ) {
 	$db               = DB::getInstance();
 	$current_date     = date( 'Y-m-d' );
 	$current_datetime = date( 'Y-m-d H:i:s' );
+	$next             = false;
 
 	// Get ips in database.
 	$stmt = $db->prepare( 'SELECT ips FROM link_view_ips WHERE short_url = :short_url' );
@@ -48,11 +49,14 @@ function update_link_views( $link_id, $ip_address ) {
 		$viewed_ips = unserialize( $ips );
 		// Check if user ip not in ips in database then add user ip to ips list.
 		if ( ! in_array( $ip_address, $viewed_ips ) ) {
+			$viewed_ips[] = $ip_address;
+
 			$stmt_insert = $db->prepare( 'UPDATE link_view_ips SET ips = :viewed_ips, updated_at = :current_datetime WHERE short_url = :short_url' );
 			$stmt_insert->bindParam( ':short_url', $link_id, PDO::PARAM_STR );
 			$stmt_insert->bindParam( ':viewed_ips', serialize( $viewed_ips ), PDO::PARAM_STR );
 			$stmt_insert->bindParam( ':current_datetime', $current_datetime, PDO::PARAM_STR );
 			$stmt_insert->execute();
+			$next = true;
 		}
 	} else { // If no ips list in db.
 		$viewed_ips      = array( $ip_address );
@@ -63,36 +67,66 @@ function update_link_views( $link_id, $ip_address ) {
 		$stmt_insert->bindParam( ':viewed_ips', $json_viewed_ips, PDO::PARAM_STR );
 		$stmt_insert->bindParam( ':current_date', $current_datetime, PDO::PARAM_STR );
 		$stmt_insert->execute();
+		$next = true;
 	}
 
-	// Get view count in database.
-	$stmt = $db->prepare( 'SELECT views_count, date FROM link_view_count WHERE short_url = :short_url AND date = :current_date' );
-	$stmt->bindParam( ':short_url', $link_id, PDO::PARAM_STR );
-	$stmt->bindParam( ':current_date', $current_date, PDO::PARAM_STR );
-	$stmt->execute();
-	$view_count_data = $stmt->fetch( PDO::FETCH_ASSOC );
+	if ( $next ) {
+		// Get view count in database.
+		$stmt = $db->prepare( 'SELECT views_count, date FROM link_view_count WHERE short_url = :short_url AND date = :current_date' );
+		$stmt->bindParam( ':short_url', $link_id, PDO::PARAM_STR );
+		$stmt->bindParam( ':current_date', $current_date, PDO::PARAM_STR );
+		$stmt->execute();
+		$view_count_data = $stmt->fetch( PDO::FETCH_ASSOC );
 
-	if ( $view_count_data ) {
-		$views_count = $view_count_data['views_count'] + 1;
-		$stmt_update = $db->prepare( 'UPDATE link_view_count SET views_count = :views_count WHERE short_url = :short_url AND date = :last_date' );
-		$stmt_update->bindParam( ':views_count', $views_count, PDO::PARAM_INT );
-		$stmt_update->bindParam( ':short_url', $link_id, PDO::PARAM_STR );
-		$stmt_update->bindParam( ':last_date', $view_count_data['date'], PDO::PARAM_STR );
-		$stmt_update->execute();
-	} else {
-		$view_count  = 1;
-		$stmt_insert = $db->prepare( 'INSERT INTO link_view_count (short_url, views_count, date) VALUES (:short_url, :views_count, :current_date)' );
-		$stmt_insert->bindParam( ':short_url', $link_id, PDO::PARAM_STR );
-		$stmt_insert->bindParam( ':views_count', $view_count, PDO::PARAM_INT );
-		$stmt_insert->bindParam( ':current_date', $current_date, PDO::PARAM_STR );
-		$stmt_insert->execute();
+		if ( $view_count_data ) {
+			$views_count = $view_count_data['views_count'] + 1;
+			$stmt_update = $db->prepare( 'UPDATE link_view_count SET views_count = :views_count WHERE short_url = :short_url AND date = :last_date' );
+			$stmt_update->bindParam( ':views_count', $views_count, PDO::PARAM_INT );
+			$stmt_update->bindParam( ':short_url', $link_id, PDO::PARAM_STR );
+			$stmt_update->bindParam( ':last_date', $view_count_data['date'], PDO::PARAM_STR );
+			$stmt_update->execute();
+		} else {
+			$view_count  = 1;
+			$stmt_insert = $db->prepare( 'INSERT INTO link_view_count (short_url, views_count, date) VALUES (:short_url, :views_count, :current_date)' );
+			$stmt_insert->bindParam( ':short_url', $link_id, PDO::PARAM_STR );
+			$stmt_insert->bindParam( ':views_count', $view_count, PDO::PARAM_INT );
+			$stmt_insert->bindParam( ':current_date', $current_date, PDO::PARAM_STR );
+			$stmt_insert->execute();
+		}
+
+		// Get view country in database.
+		$country             = new Request();
+		$ip                  = $country->getIpAddress();
+		$is_valid_ip_address = $country->isValidIpAddress( $ip );
+		if ( $is_valid_ip_address == '' ) {
+			echo "<div class='error'>Invalid IP address $ip</div>";
+		} else {
+			$geo_location_data = $country->getLocation( $ip );
+			// Get view country in database.
+			$stmt = $db->prepare( 'SELECT country, country_code, view FROM link_view_country WHERE short_url = :short_url AND country_code = :curr_country_code' );
+			$stmt->bindParam( ':short_url', $link_id, PDO::PARAM_STR );
+			$stmt->bindParam( ':curr_country_code', $geo_location_data['country_code'], PDO::PARAM_STR );
+			$stmt->execute();
+			$view_country_data = $stmt->fetch( PDO::FETCH_ASSOC );
+			if ( $view_country_data ) {
+				$views_count = $view_country_data['view'] + 1;
+				$stmt_update = $db->prepare( 'UPDATE link_view_country SET view = :views_count WHERE short_url = :short_url AND country_code = :curr_country_code' );
+				$stmt_update->bindParam( ':views_count', $views_count, PDO::PARAM_INT );
+				$stmt_update->bindParam( ':short_url', $link_id, PDO::PARAM_STR );
+				$stmt_update->bindParam( ':curr_country_code', $geo_location_data['country_code'], PDO::PARAM_STR );
+				$stmt_update->execute();
+			} else {
+				$view_count  = 1;
+				$stmt_insert = $db->prepare( 'INSERT INTO link_view_country (short_url, view, country, country_code, created_at ) VALUES (:short_url, :views_count, :country, :country_code, :current_date_time)' );
+				$stmt_insert->bindParam( ':short_url', $link_id, PDO::PARAM_STR );
+				$stmt_insert->bindParam( ':views_count', $view_count, PDO::PARAM_INT );
+				$stmt_insert->bindParam( ':country', $geo_location_data['country'], PDO::PARAM_STR );
+				$stmt_insert->bindParam( ':country_code', $geo_location_data['country_code'], PDO::PARAM_STR );
+				$stmt_insert->bindParam( ':current_date_time', $current_datetime, PDO::PARAM_STR );
+				$stmt_insert->execute();
+			}
+		}
 	}
-
-	// Get view country in database.
-	$country             = new Request();
-	$ip                  = $country->getIpAddress();
-	$is_valid_ip_address = $country->isValidIpAddress( $ip );
-	var_dump( $is_valid_ip_address );
 
 	// $stmt2 = $db->prepare( 'SELECT views_count, date FROM link_view_count WHERE short_url = :short_url ORDER BY date DESC LIMIT 1' );
 	// $stmt2->bindParam( ':short_url', $link_id, PDO::PARAM_STR );
