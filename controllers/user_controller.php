@@ -25,13 +25,17 @@ class UserController extends BaseController {
 			header( 'location:' . SITE_URL );
 		}
 		$user_id            = intval( $_GET['uid'] );
+		$view_in_day_list   = User::get_view_by_user_day_list( $user_id );
 		$view_in_day        = User::get_view_in_day( $user_id );
 		$view_in_curr_month = User::get_view_in_month( $user_id );
 		$total_view         = User::get_total_view( $user_id );
+		$link_list          = User::get_link_list( $user_id );
 		$data               = array(
+			'daily_view'    => $view_in_day_list,
 			'total_view'    => $total_view,
 			'view_in_month' => $view_in_curr_month,
 			'view_in_day'   => $view_in_day,
+			'links'         => $link_list,
 		);
 		$this->render( 'stats', $data );
 	}

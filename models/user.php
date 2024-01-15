@@ -66,11 +66,11 @@ class User {
 
 		// Truy vấn lấy tổng số lượt xem của các link của user trong ngày hiện tại
 		$query = '
-			SELECT SUM(link_views.views_count) AS total_views
-			FROM link_views
-			JOIN links ON link_views.short_url = links.short_url
+			SELECT SUM(link_view_count.views_count) AS total_views
+			FROM link_view_count
+			JOIN links ON link_view_count.short_url = links.short_url
 			WHERE links.user_id = :user_id
-			AND DATE(link_views.date) = :curr_day;
+			AND DATE(link_view_count.date) = :curr_day;
 		';
 
 		$stmt = $db->prepare( $query );
@@ -87,9 +87,9 @@ class User {
 	public static function get_total_view( $user_id ) {
 		$db    = DB::getInstance();
 		$query = '
-			SELECT SUM(link_views.views_count) AS total_views
-			FROM link_views
-			JOIN links ON link_views.short_url = links.short_url
+			SELECT SUM(link_view_count.views_count) AS total_views
+			FROM link_view_count
+			JOIN links ON link_view_count.short_url = links.short_url
 			WHERE links.user_id = :userId;
 		';
 
@@ -106,12 +106,12 @@ class User {
 	public static function get_view_in_month( $user_id, $date = '' ) {
 		$db    = DB::getInstance();
 		$query = '
-			SELECT SUM(link_views.views_count) AS total_views
-			FROM link_views
-			JOIN links ON link_views.short_url = links.short_url
+			SELECT SUM(link_view_count.views_count) AS total_views
+			FROM link_view_count
+			JOIN links ON link_view_count.short_url = links.short_url
 			WHERE links.user_id = :userId
-			AND YEAR(link_views.date) = YEAR(CURRENT_DATE)
-			AND MONTH(link_views.date) = MONTH(CURRENT_DATE);
+			AND YEAR(link_view_count.date) = YEAR(CURRENT_DATE)
+			AND MONTH(link_view_count.date) = MONTH(CURRENT_DATE);
 		';
 
 		$stmt = $db->prepare( $query );
@@ -122,6 +122,54 @@ class User {
 
 		// Hiển thị tổng số lượt xem
 		return $result['total_views'] == null ? 0 : $result['total_views'];
+	}
+
+	public static function get_view_by_user_day_list( $user_id ) {
+		$db = DB::getInstance();
+		// Truy vấn lấy danh sách lượt xem theo ngày của một người dùng
+		$query = '
+			SELECT DATE(link_view_count.date) AS x, SUM(link_view_count.views_count) AS y
+			FROM link_view_count
+			JOIN links ON link_view_count.short_url = links.short_url
+			WHERE links.user_id = :user_id
+			GROUP BY DATE(link_view_count.date)
+			ORDER BY DATE(link_view_count.date);
+		';
+
+		$statement = $db->prepare( $query );
+		$statement->bindParam( ':user_id', $user_id, PDO::PARAM_INT );
+		$statement->execute();
+
+		$result = $statement->fetchAll( PDO::FETCH_ASSOC );
+
+		return $result;
+	}
+
+	public static function get_link_list( $user_id ) {
+		$db = DB::getInstance();
+		// Ngày và tháng hiện tại
+		$current_month = date( 'Y-m' );
+
+		// Truy vấn lấy danh sách các link của người dùng và tổng lượt xem trong tháng hiện tại
+		$query = "
+			SELECT links.id, links.long_url, links.short_url,
+				   SUM(link_view_count.views_count) AS total_views
+			FROM links
+			LEFT JOIN link_view_count ON links.short_url = link_view_count.short_url
+			WHERE links.user_id = :user_id
+			  AND DATE_FORMAT(link_view_count.date, '%Y-%m') = :current_month
+			GROUP BY links.id
+			ORDER BY links.id DESC;
+		";
+
+		$statement = $db->prepare( $query );
+		$statement->bindParam( ':user_id', $user_id, PDO::PARAM_INT );
+		$statement->bindParam( ':current_month', $current_month );
+		$statement->execute();
+
+		$result = $statement->fetchAll( PDO::FETCH_ASSOC );
+
+		return $result;
 	}
 
 	public static function pagination( $limit = 20 ) {

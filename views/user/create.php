@@ -60,29 +60,29 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
 }
 ?>
 
-<div class="uk-section uk-animation-fade">
-	<div class="page-header">
-		<h3 class="uk-margin-small-bottom">Thêm mới thành viên</h3>
+<?php if ( ! empty( $notices ) ) { ?>
+	<div class="notices-wrapper uk-alert-success uk-margin-medium-top" uk-alert>
+		<ul class="uk-list">
+			<?php foreach ( $notices as $notice ) { ?>
+				<li class="uk-text-success"><?php echo $notice; ?></li>
+			<?php } ?>
+		</ul>
+	</div>
+<?php } ?>
+<?php if ( ! empty( $errors ) ) { ?>
+	<div class="errors-wrapper uk-alert-danger uk-margin-medium-top" uk-alert>
+		<ul class="uk-list">
+			<?php foreach ( $errors as $error ) { ?>
+				<li class="uk-text-danger"><?php echo $error; ?></li>
+			<?php } ?>
+		</ul>
+	</div>
+<?php } ?>
+<div class="uk-section uk-margin-medium-top uk-card uk-card-default my-padding uk-card-body my-border-radius my-box-shadow-none">
+	<div class="page-header my-margin-bottom">
+		<h1 class="my-heading uk-margin-remove">Thêm mới thành viên</h1>
 	</div>
 	<div class="content-body">
-		<?php if ( ! empty( $notices ) ) { ?>
-			<div class="notices-wrapper uk-alert-success" uk-alert>
-				<ul class="uk-list">
-					<?php foreach ( $notices as $notice ) { ?>
-						<li class="uk-text-success"><?php echo $notice; ?></li>
-					<?php } ?>
-				</ul>
-			</div>
-		<?php } ?>
-		<?php if ( ! empty( $errors ) ) { ?>
-			<div class="errors-wrapper uk-alert-danger" uk-alert>
-				<ul class="uk-list">
-					<?php foreach ( $errors as $error ) { ?>
-						<li class="uk-text-danger"><?php echo $error; ?></li>
-					<?php } ?>
-				</ul>
-			</div>
-		<?php } ?>
 		<form class="uk-form-stacked" method="post">
 			<div class="uk-margin">
 				<label class="uk-form-label" for="username">Tài khoản *</label>
@@ -119,7 +119,7 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
 				</div>
 			</div>
 
-			<div class="uk-margin">
+			<div class="uk-margin uk-margin-remove-bottom">
 				<button class="uk-button uk-button-primary" type="submit">Tạo tài khoản</button>
 			</div>
 		</form>

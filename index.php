@@ -9,6 +9,10 @@ require_once 'connection.php';
 require_once 'helper.php';
 
 if ( isset( $_GET['u'] ) ) {
+	if ( strpos( $_SERVER['HTTP_USER_AGENT'], 'facebookexternalhit' ) !== false ) {
+		die();
+	}
+
 	$db = DB::getInstance();
 	$u  = filter_var( $_GET['u'] );
 
@@ -28,9 +32,7 @@ if ( isset( $_GET['u'] ) ) {
 		$link_id    = filter_var( $_GET['u'] );
 		$check      = update_link_views( $link_id, $ip_address );
 
-		if ( $check ) {
-			header( 'location: ' . $long_url );
-		}
+		// header('location: '. $long_url);
 	}
 
 	die();

@@ -1,9 +1,7 @@
-
-
-<div class="uk-section uk-animation-fade">
-	<h3 class="uk-margin-small-bottom">Danh sách link</h3>
+<div class="uk-section uk-margin-medium-top uk-card uk-card-default my-padding uk-card-body my-border-radius my-box-shadow-none">
+	<h1 class="my-heading my-margin-bottom">Danh sách link</h1>
 	<div class="uk-overflow-auto">
-		<table class="table-list uk-table uk-table-middle uk-table-divider" style="max-height: 500px; overflow-y: auto">
+		<table class="table-list uk-table uk-table-small uk-table-middle">
 			<thead>
 				<tr>
 					<th class="uk-width-small" style="min-width: 120px;">Tài khoản</th>
@@ -31,7 +29,7 @@
 								</div>
 							</td>
 							<td class="uk-text-nowrap"><?php echo date_format( $date, 'd-m-Y H:i:s' ); ?></td>
-							<td><?php display_link_views( $link['short_url'] ); ?></td>
+							<!-- <td><?php display_link_views( $link['short_url'] ); ?></td> -->
 							<td class="uk-text-nowrap">
 								<div>
 									<a uk-tooltip="title: Xem thống kê chi tiết" href="<?php echo SITE_URL . '/index.php?controller=user&action=stats&uid=' . $user['id']; ?>" class="uk-icon-link uk-margin-small-right" uk-icon="bolt"></a>

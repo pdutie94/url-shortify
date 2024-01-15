@@ -2,24 +2,22 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . '/models/user.php';
 ?>
 
-<div class="site-header">
+<div class="site-header" uk-sticky>
 	<nav class="uk-navbar-container">
 		<div class="uk-container">
 			<div uk-navbar>
 
 				<div class="uk-navbar-left">
-					<!-- <a class="uk-navbar-item uk-logo" href="#" aria-label="Back to Home">Logo</a> -->
-
-					<ul class="uk-navbar-nav uk-visible@s">
-						<li class="menu-item uk-active">
+					<ul class="uk-navbar-nav uk-visible@m">
+						<li class="menu-item">
 							<a href="<?php echo SITE_URL; ?>"><span class="uk-margin-small-right" uk-icon="home"></span>Dashboard</a>
 						</li>
-						<li class="menu-item">
-							<a href="<?php echo SITE_URL . '/index.php?controller=links'; ?>"><span class="uk-margin-small-right" uk-icon="link"></span>Tạo Link</a>
+						<li class="menu-item<?php echo is_active_menu_item( 'links' ) ? ' uk-active' : ''; ?>">
+							<a href="<?php echo SITE_URL . '/index.php?controller=links'; ?>"><span class="uk-margin-small-right" uk-icon="link"></span>Danh sách Link</a>
 						</li>
-						<li class="menu-item"><a href="<?php echo SITE_URL . '/index.php?controller=links&action=list'; ?>"><span class="uk-margin-small-right" uk-icon="list"></span>Danh sách Link</a></li>
+						<!-- <li class="menu-item<?php echo is_active_menu_item( 'links', 'list' ) ? ' uk-active' : ''; ?>"><a href="<?php echo SITE_URL . '/index.php?controller=links&action=list'; ?>"><span class="uk-margin-small-right" uk-icon="list"></span>Danh sách Link</a></li> -->
 						<?php if ( is_admin_user() ) { ?>
-							<li class="menu-item">
+							<li class="menu-item<?php echo is_active_menu_item( 'user' ) ? ' uk-active' : ''; ?>">
 								<a href="<?php echo SITE_URL . '/index.php?controller=user'; ?>"><span class="uk-margin-small-right" uk-icon="users"></span>Thành viên</a>
 							</li>
 						<?php } else { ?>
@@ -28,7 +26,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/models/user.php';
 							</li>
 						<?php } ?>
 					</ul>
-					<a href="#" class="uk-navbar-toggle uk-hidden@s" uk-navbar-toggle-icon uk-toggle="target: #sidenav"></a>
+					<a href="#" class="uk-navbar-toggle uk-hidden@m" uk-navbar-toggle-icon uk-toggle="target: #sidenav"></a>
 
 				</div>
 
@@ -57,16 +55,16 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/models/user.php';
 <div id="sidenav" uk-offcanvas="flip: false">
 	<div class="uk-offcanvas-bar">
 		<ul class="uk-nav-default" uk-nav>
-			<li class="menu-item uk-active">
+			<li class="menu-item uk-margin-small-bottom uk-active">
 				<a href="<?php echo SITE_URL; ?>"><span class="uk-margin-small-right" uk-icon="home"></span>Dashboard</a>
 			</li>
-			<li class="menu-item">
-				<a href="<?php echo SITE_URL . '/index.php?controller=links'; ?>"><span class="uk-margin-small-right" uk-icon="plus"></span>Tạo Link</a>
+			<li class="menu-item uk-margin-small-bottom uk-margin-bottom">
+				<a href="<?php echo SITE_URL . '/index.php?controller=links'; ?>"><span class="uk-margin-small-right" uk-icon="plus"></span>Danh sách Link</a>
 			</li>
-			<li class="menu-item">
+			<!-- <li class="menu-item uk-margin-small-bottom uk-margin-bottom">
 				<a href="<?php echo SITE_URL . '/index.php?controller=links&action=list'; ?>"><span class="uk-margin-small-right" uk-icon="list"></span>Danh sách Link</a>
-			</li>
-			<li class="menu-item">
+			</li> -->
+			<li class="menu-item uk-margin-bottom">
 				<a href="<?php echo SITE_URL . '/index.php?controller=user'; ?>"><span class="uk-margin-small-right" uk-icon="users"></span>Thành viên</a>
 			</li>
 		</ul>

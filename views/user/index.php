@@ -1,15 +1,14 @@
 
-
-<div class="uk-section uk-animation-fade">
-	<div class="page-header uk-margin-small-bottom">
-		<h3 class="uk-margin-small-bottom">Danh sách thành viên</h3>
+<div class="uk-section uk-margin-medium-top uk-card uk-card-default my-padding uk-card-body my-border-radius my-box-shadow-none">
+	<div class="page-header my-margin-bottom uk-flex uk-flex-between uk-flex-middle uk-flex-wrap">
+		<h1 class="my-heading uk-margin-remove">Danh sách thành viên</h1>
 		<a href="<?php echo SITE_URL . '/index.php?controller=user&action=create'; ?>" class="uk-button uk-button-primary uk-button-small">Tạo tài khoản</a>
 	</div>
 	<div class="uk-overflow-auto">
-		<table class="uk-table uk-table-middle uk-table-divider" style="max-height: 500px; overflow-y: auto">
+		<table class="uk-table uk-table-small uk-table-middle table-list">
 			<thead>
 				<tr>
-					<th class="uk-table-shrink">ID</th>
+					<th style="width: 40px">ID</th>
 					<th class="uk-table-shrink" class="uk-width-medium">Avatar</th>
 					<th style="min-width: 180px" class="uk-width-medium">Tên</th>
 					<th style="min-width: 120px" class="uk-width-medium">Username</th>
@@ -27,7 +26,7 @@
 						?>
 						<tr>
 							<td class="uk-text-nowrap"><?php echo $user['id']; ?></td>
-							<td class="uk-text-nowrap"><?php echo User::get_user_avatar( array( '50px', '50px' ), $user['id'] ); ?></td>
+							<td class="uk-text-nowrap"><?php echo User::get_user_avatar( array( '40px', '40px' ), $user['id'] ); ?></td>
 							<td class="uk-text-nowrap"><?php echo $user['full_name']; ?></td>
 							<td class="uk-text-nowrap"><?php echo $user['username']; ?></td>
 							<td class="uk-text-truncate"><?php echo $user['email']; ?></td>
@@ -46,7 +45,7 @@
 			</tbody>
 			<tfoot>
 				<tr>
-					<th class="uk-table-shrink">ID</th>
+					<th style="width: 40px">ID</th>
 					<th class="uk-table-shrink" class="uk-width-medium">Avatar</th>
 					<th style="min-width: 180px" class="uk-width-medium">Tên</th>
 					<th style="min-width: 120px" class="uk-width-medium">Username</th>

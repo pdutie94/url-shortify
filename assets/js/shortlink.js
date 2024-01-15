@@ -8,7 +8,7 @@ function afterSendRequest( form) {
 }
 
 function addNewRow( data ) {
-	var tableBody = document.querySelector( '.table-list table tbody' )
+	var tableBody = document.querySelector( '.table-list tbody' )
 	var row       = tableBody.insertRow( 0 )
 	row.classList.add( 'uk-animation-fade' )
 	var c1        = row.insertCell( 0 )

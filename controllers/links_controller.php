@@ -11,9 +11,8 @@ class LinksController extends BaseController {
 	}
 
 	public function index() {
-		$links = Link::get_links_in_day();
-		// var_dump($links);
-		$data = array( 'links' => $links );
+		$links = Link::all( 20 );
+		$data  = array( 'links' => $links );
 		$this->render( 'index', $data );
 	}
 

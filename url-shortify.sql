@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jan 09, 2024 at 06:06 PM
+-- Generation Time: Jan 15, 2024 at 05:44 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.2.12
 
@@ -27,33 +27,55 @@ SET time_zone = "+00:00";
 -- Table structure for table `links`
 --
 
-CREATE TABLE IF NOT EXISTS `links` (
-  `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `links` (
+  `id` int UNSIGNED NOT NULL,
   `long_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `short_url` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `user_id` int UNSIGNED NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  KEY `fk short url` (`short_url`),
-  KEY `fk user id` (`user_id`)
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `link_views`
+-- Table structure for table `link_view_count`
 --
 
-CREATE TABLE IF NOT EXISTS `link_views` (
-  `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `link_view_count` (
+  `id` int UNSIGNED NOT NULL,
   `short_url` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `viewed_ips` json NOT NULL,
-  `viewed_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date` date NOT NULL,
-  `views_count` int NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
-  KEY `link_id` (`short_url`),
-  KEY `viewed_at` (`viewed_at`)
+  `views_count` int NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `link_view_country`
+--
+
+CREATE TABLE `link_view_country` (
+  `id` int UNSIGNED NOT NULL,
+  `short_url` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `country` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `country_code` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `view` int NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `link_view_ips`
+--
+
+CREATE TABLE `link_view_ips` (
+  `id` int NOT NULL,
+  `short_url` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `ips` longtext COLLATE utf8mb4_general_ci NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -62,17 +84,16 @@ CREATE TABLE IF NOT EXISTS `link_views` (
 -- Table structure for table `users`
 --
 
-CREATE TABLE IF NOT EXISTS `users` (
-  `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `users` (
+  `id` int UNSIGNED NOT NULL,
   `username` varchar(30) COLLATE utf8mb4_general_ci NOT NULL,
   `full_name` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `avatar_path` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `email` varchar(250) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `password` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `role` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1: Admin, 0: Member',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `avatar_path` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `users`
@@ -80,6 +101,78 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 INSERT INTO `users` (`id`, `username`, `full_name`, `email`, `password`, `role`, `created_at`, `avatar_path`) VALUES
 (1, 'admin', 'Phạm Đức Tiến', 'pdutie94@gmail.com', '$2a$12$b1UV3VotFLGXKYdPEY.7qu7yfvS.Xnh5F3Y/p4W.UscJUJhYlS79i', 1, '2024-01-10 01:05:55', NULL);
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `links`
+--
+ALTER TABLE `links`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk short url` (`short_url`),
+  ADD KEY `fk user id` (`user_id`);
+
+--
+-- Indexes for table `link_view_count`
+--
+ALTER TABLE `link_view_count`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `link_id` (`short_url`);
+
+--
+-- Indexes for table `link_view_country`
+--
+ALTER TABLE `link_view_country`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `link_view_ips`
+--
+ALTER TABLE `link_view_ips`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_link_view_ip` (`short_url`);
+
+--
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `links`
+--
+ALTER TABLE `links`
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `link_view_count`
+--
+ALTER TABLE `link_view_count`
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `link_view_country`
+--
+ALTER TABLE `link_view_country`
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `link_view_ips`
+--
+ALTER TABLE `link_view_ips`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Constraints for dumped tables
@@ -92,10 +185,16 @@ ALTER TABLE `links`
   ADD CONSTRAINT `fk user id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT;
 
 --
--- Constraints for table `link_views`
+-- Constraints for table `link_view_count`
 --
-ALTER TABLE `link_views`
+ALTER TABLE `link_view_count`
   ADD CONSTRAINT `fk short url link` FOREIGN KEY (`short_url`) REFERENCES `links` (`short_url`) ON DELETE CASCADE ON UPDATE RESTRICT;
+
+--
+-- Constraints for table `link_view_ips`
+--
+ALTER TABLE `link_view_ips`
+  ADD CONSTRAINT `fk_link_view_ip` FOREIGN KEY (`short_url`) REFERENCES `links` (`short_url`) ON DELETE CASCADE ON UPDATE RESTRICT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

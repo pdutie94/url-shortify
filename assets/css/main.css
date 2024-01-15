@@ -1,10 +1,195 @@
-.site-main {
-	min-height: 80vh;
+@font-face {
+	font-family: SVNPoppins;
+	src: url(../fonts/SVN-Poppins-Regular.ttf);
+	font-weight: 400;
+}
+@font-face {
+	font-family: SVNPoppins;
+	src: url(../fonts/SVN-Poppins-Italic.ttf);
+	font-weight: 400;
+	font-style:italic;
+}
+@font-face {
+	font-family: SVNPoppins;
+	src: url(../fonts/SVN-Poppins-Medium.ttf);
+	font-weight: 500;
+}
+@font-face {
+	font-family: SVNPoppins;
+	src: url(../fonts/SVN-Poppins-MediumItalic.ttf);
+	font-weight: 500;
+	font-style:italic;
+}
+@font-face {
+	font-family: SVNPoppins;
+	src: url(../fonts/SVN-Poppins-SemiBold.ttf);
+	font-weight: 600;
+}
+@font-face {
+	font-family: SVNPoppins;
+	src: url(../fonts/SVN-Poppins-SemiBoldItalic.ttf);
+	font-weight: 600;
+	font-style:italic;
+}
+@font-face {
+	font-family: SVNPoppins;
+	src: url(../fonts/SVN-Poppins-Bold.ttf);
+	font-weight: 700;
+}
+@font-face {
+	font-family: SVNPoppins;
+	src: url(../fonts/SVN-Poppins-BoldItalic.ttf);
+	font-weight: 700;
+	font-style:italic;
+}
+
+.my-box-shadow-none {
+	box-shadow: none !important;
+}
+.my-border-radius {
+	border-radius: 0.8rem !important;
+}
+.my-border-radius-small {
+	border-radius: 0.2rem !important;
+}
+.my-padding {
+	padding: 30px !important;
+}
+.my-padding-small {
+	padding: 20px !important;
+}
+.my-margin-small-top {
+	margin-top: 30px;
+}
+.my-padding-top-none {
+	padding-top: 0 !important;
+}
+.my-margin-bottom {
+	margin-bottom: 1.6rem !important;
+}
+.my-heading {
+	font-size: 22px;
+	font-weight: 600;
+}
+.my-card-title {
+	font-size: 17px;
+	font-weight: 500;
+	margin-bottom: 1rem;
+}
+
+::-webkit-scrollbar {
+	width: 6px;
+	height: 6px;
+}
+::-webkit-scrollbar-track {
+	background: transparent;
+}
+::-webkit-scrollbar-thumb {
+	background-color: rgba(155, 155, 155, 0.5);
+	border-radius: 20px;
+	border: transparent;
+}
+
+html {
+	background-color: #f4f6fa;
+}
+body {
+	font-family:SVNPoppins, sans-serif;
+	font-weight: 400;
+	font-size: 16px;
+}
+.uk-navbar-item, .uk-navbar-nav>li>a, .uk-navbar-toggle {
+    font-family: SVNPoppins, sans-serif;
+    font-size: 16px;
+    min-height: 60px;
+    text-transform: none;
+    color: #333;
+    font-weight: 500;
+}
+.uk-navbar-nav>li.uk-active>a {
+    color: #1e87f0;
+}
+.uk-h1, .uk-h2, .uk-h3, .uk-h4, .uk-h5, .uk-h6, .uk-heading-2xlarge, .uk-heading-3xlarge, .uk-heading-large, .uk-heading-medium, .uk-heading-small, .uk-heading-xlarge, h1, h2, h3, h4, h5, h6 {
+	font-family: SVNPoppins, sans-serif;
+}
+input, button, .uk-input, .uk-button {
+	border-radius: 0.2rem;
+}
+input.uk-input {
+	font-size: 16px;
+}
+input.long_url {
+	font-size: 16px;
+}
+.uk-table-small td, .uk-table-small th {
+    padding: 0 0.2rem 0.8rem;
 }
 .uk-modal.uk-flex-middle.uk-open {
 	display: flex !important;
 }
-.links-list-arena .table-list {
-	max-height: 500px;
-	overflow-y: auto;
+.table-list th {
+	font-weight: 500;
+	color: #526281;
+	text-transform: initial;
+	font-size: 16px;
+}
+.table-list input {
+	border: none;
+	height: auto;
+	padding: 0 40px 0 0;
+	font-size: 15px;
+}
+#sidenav .menu-item {
+	font-size: 1rem;
+}
+.uk-navbar-container:not(.uk-navbar-transparent) {
+ background: #fff;
+}
+.uk-form-label {
+	font-size: inherit;
+}
+.card-number {
+	color: #526281;
+	line-height: 1;
+	font-weight: 600;
+}
+.site-header {
+	box-shadow: 0 3px 5px rgba(0,0,0,0.05);
+}
+
+@media (max-width: 959px) {
+	body {
+		font-size: 15px;
+	}
+	.my-heading {
+		font-size: 20px;
+	}
+	.my-margin-bottom {
+		margin-bottom: 1.2rem !important;
+	}
+	.my-padding {
+		padding: 20px !important;
+	}
+	.my-card-title {
+		font-size: 16px;
+		margin-bottom: 0.8rem;
+	}	
+	.section-general-stats .my-box:not(:first-child) {
+		margin-top: 0 !important;
+	}
+}
+@media (max-width: 639px) {
+	body {
+		font-size: 14px;
+	}
+	.my-heading {
+		font-size: 18px;
+	}
+	.my-card-title {
+		font-size: 15px;
+		margin-bottom: 0.6rem;
+	}
+	.my-margin-bottom {
+		margin-bottom: 1rem !important;
+	}
 }
