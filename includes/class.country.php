@@ -1,5 +1,5 @@
 <?php
-class Request {
+class Country {
 
 
 	public function getIpAddress() {

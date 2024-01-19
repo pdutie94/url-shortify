@@ -1,5 +1,4 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/models/user.php';
 
 if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 	$username = trim( $_POST['username'] );
@@ -8,9 +7,9 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 	if ( $user ) {
 		if ( password_verify( $password, $user['password'] ) ) {
 			// Login successful.
-			$_SESSION['logged_in'] = true;
-			$_SESSION['id']        = $user['id'];
-			$_SESSION['username']  = $username;
+			$expiration_time = time() + 3600;
+			setcookie( 'user_token', $user['id'], $expiration_time, '/' );
+			$_SESSION['user_id'] = $user['id'];
 
 			echo '<script>UIkit.notification({
                 message: \'Đã đăng nhập thành công!<br>Đang chuyển hướng...\',

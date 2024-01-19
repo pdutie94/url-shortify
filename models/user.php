@@ -39,7 +39,7 @@ class User {
 
 	public static function get_current_user() {
 		$sql  = 'SELECT * FROM users WHERE id=:id';
-		$user = DB::fetch( $sql, array( ':id' => $_SESSION['id'] ) );
+		$user = DB::fetch( $sql, array( ':id' => $_SESSION['user_id'] ) );
 
 		return $user;
 	}
@@ -48,7 +48,7 @@ class User {
 		if ( empty( $size ) ) {
 			$size = array( '40px', '40px' );
 		}
-		$user_id          = $id == null ? $_SESSION['id'] : $id;
+		$user_id          = $id == null ? $_SESSION['user_id'] : $id;
 		$sql              = 'SELECT avatar_path FROM users WHERE id=:id';
 		$user_avatar_path = DB::fetchColumn( $sql, array( ':id' => $user_id ) );
 		$avatar_url       = SITE_URL . '/uploads/avatars/default_avatar.png';

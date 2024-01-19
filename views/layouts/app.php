@@ -1,4 +1,10 @@
 <?php
+if ( isset( $_COOKIE['user_token'] ) && isset( $_SESSION['user_id'] ) ) {
+	$user_id = $_SESSION['user_id'];
+
+	$expiration_time = time() + 3600;
+	setcookie( 'user_token', $user_id, $expiration_time, '/' );
+}
 $title = 'Flatsomix';
 if ( ! isset( $_GET['u'] ) ) {
 	$title = is_user_logged_in() ? 'Dashboard' : 'Đăng nhập';
