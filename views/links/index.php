@@ -17,24 +17,6 @@ require_once 'models/user.php';
 				</div>
 			</form>
 		</div>
-		<!-- <div class="uk-grid-margin uk-grid uk-grid-stack" uk-grid>
-			<div class="uk-width-1-1@m">
-				<div class="uk-margin uk-margin-auto uk-card uk-card-default uk-card-body my-padding my-border-radius my-box-shadow-none">
-					<h2 class="my-heading my-margin-bottom">Tạo Short Link</h2>
-					<form class="form-short_link" action="" method="post">
-						<div class="form-control uk-margin">
-							<div class="uk-inline uk-width-1-1">
-								<span class="uk-form-icon" uk-icon="icon: link"></span>
-								<input name="long_url" class="uk-input uk-form-medium long_url" required type="url" placeholder="Nhập hoặc dán link vào đây">
-							</div>
-						</div>
-						<div class="uk-margin uk-margin-remove-bottom">
-							<button class="uk-button uk-button-primary uk-button-medium">Tạo Link</button>
-						</div>
-					</form>
-				</div>
-			</div>
-		</div> -->
 		<div class="links-list-arena uk-margin-medium-top uk-card uk-card-default my-padding uk-card-body my-border-radius my-box-shadow-none">
 			<h2 class="my-heading my-margin-bottom">Danh sách link đã tạo</h2>
 			<div class="uk-overflow-auto">

@@ -33,115 +33,97 @@ function generateRandomString( $length = 10 ) {
 }
 
 // Function to check and update link_view_ips
-function update_link_view_ips( $db, $link_id, $ip_address, $current_datetime ) {
+function update_link_view_ips( $link_id, $ip_address, $current_datetime ) {
 	$db   = DB::getInstance();
 	$stmt = $db->prepare( 'SELECT ips FROM link_view_ips WHERE short_url = :short_url' );
 	$stmt->bindParam( ':short_url', $link_id, PDO::PARAM_STR );
 	$stmt->execute();
-	$ips           = $stmt->fetchColumn();
-	$updateViewIps = false;
+	$ips = $stmt->fetchColumn();
 
 	if ( $ips ) {
 		$viewed_ips = unserialize( $ips );
 
 		if ( ! in_array( $ip_address, $viewed_ips ) ) {
-			$viewed_ips[]  = $ip_address;
-			$updateViewIps = true;
+			$viewed_ips[] = $ip_address;
+			$stmt_update  = $db->prepare( 'UPDATE link_view_ips SET ips=:viewed_ips, updated_at=:current_datetime WHERE short_url=:short_url' );
+			$stmt_update->bindParam( ':short_url', $link_id, PDO::PARAM_STR );
+			$stmt_update->bindParam( ':viewed_ips', serialize( $viewed_ips ), PDO::PARAM_STR );
+			$stmt_update->bindParam( ':current_datetime', $current_datetime, PDO::PARAM_STR );
+			$stmt_update->execute();
 		} else {
-			$updateViewIps = false;
+			return false;
 		}
 	} else {
-		$viewed_ips    = array( $ip_address );
-		$updateViewIps = true;
-	}
-
-	if ( $updateViewIps ) {
-		$stmt_update = $db->prepare( 'INSERT INTO link_view_ips (short_url, ips, created_at, updated_at) VALUES (:short_url, :viewed_ips, :current_datetime, :current_datetime) ON DUPLICATE KEY UPDATE ips = :viewed_ips, updated_at = :current_datetime' );
+		$viewed_ips  = array( $ip_address );
+		$stmt_update = $db->prepare( 'INSERT INTO link_view_ips (short_url, ips, created_at, updated_at) VALUES (:short_url, :viewed_ips, :current_datetime, :current_datetime)' );
 		$stmt_update->bindParam( ':short_url', $link_id, PDO::PARAM_STR );
 		$stmt_update->bindParam( ':viewed_ips', serialize( $viewed_ips ), PDO::PARAM_STR );
 		$stmt_update->bindParam( ':current_datetime', $current_datetime, PDO::PARAM_STR );
 		$stmt_update->execute();
-
-		return true;
 	}
+	// var_dump($updateViewIps );
+	// exit;
 
-	return false;
+	return true;
 }
 
 function update_link_views( $link_id, $ip_address ) {
 	$db               = DB::getInstance();
 	$current_datetime = date( 'Y-m-d H:i:s' );
 	// Check and update link_view_ips
-	$next = update_link_view_ips( $db, $link_id, $ip_address, $current_datetime );
+	$next = update_link_view_ips( $link_id, $ip_address, $current_datetime );
 
 	if ( $next ) {
 		// Get view count in database.
-		$stmt = $db->prepare( 'INSERT INTO link_view_count (short_url, views_count, date) VALUES (:short_url, 1, :current_date) ON DUPLICATE KEY UPDATE views_count = views_count + 1' );
+		$stmt = $db->prepare( 'SELECT short_url FROM link_view_count WHERE short_url = :short_url AND date=:current_date' );
 		$stmt->bindParam( ':short_url', $link_id, PDO::PARAM_STR );
 		$stmt->bindParam( ':current_date', date( 'Y-m-d' ), PDO::PARAM_STR );
 		$stmt->execute();
+		$result = $stmt->fetchColumn();
+		// Update view count
+		if ( $result ) {
+			$stmt = $db->prepare( 'UPDATE link_view_count SET views_count=views_count + 1 WHERE short_url=:short_url AND date=:current_date' );
+			$stmt->bindParam( ':short_url', $link_id, PDO::PARAM_STR );
+			$stmt->bindParam( ':current_date', date( 'Y-m-d' ), PDO::PARAM_STR );
+			$stmt->execute();
+		} else {
+			$stmt = $db->prepare( 'INSERT INTO link_view_count (short_url, views_count, date) VALUES (:short_url, 1, :current_date)' );
+			$stmt->bindParam( ':short_url', $link_id, PDO::PARAM_STR );
+			$stmt->bindParam( ':current_date', date( 'Y-m-d' ), PDO::PARAM_STR );
+			$stmt->execute();
+		}
 
 		// Get view country in database.
 		$country             = new Country();
 		$ip                  = $country->getIpAddress();
 		$is_valid_ip_address = $country->isValidIpAddress( $ip );
-
 		if ( $is_valid_ip_address !== '' ) {
 			$geo_location_data = $country->getLocation( $ip );
 
-			$stmt_update_country = $db->prepare( 'INSERT INTO link_view_country (short_url, view, country, country_code, created_at, updated_at) VALUES (:short_url, 1, :country, :country_code, :current_datetime, :current_datetime) ON DUPLICATE KEY UPDATE view = view + 1' );
-			$stmt_update_country->bindParam( ':short_url', $link_id, PDO::PARAM_STR );
-			$stmt_update_country->bindParam( ':country', $geo_location_data['country'], PDO::PARAM_STR );
-			$stmt_update_country->bindParam( ':country_code', $geo_location_data['country_code'], PDO::PARAM_STR );
-			$stmt_update_country->bindParam( ':current_datetime', $current_datetime, PDO::PARAM_STR );
-			$stmt_update_country->execute();
+			$stmt = $db->prepare( 'SELECT country_code FROM link_view_country WHERE short_url = :short_url AND country_code=:country_code' );
+			$stmt->bindParam( ':short_url', $link_id, PDO::PARAM_STR );
+			$stmt->bindParam( ':country_code', $geo_location_data['country_code'], PDO::PARAM_STR );
+			$stmt->execute();
+			$country_code = $stmt->fetchColumn();
+
+			if ( $country_code ) {
+				$stmt_update_country = $db->prepare( 'UPDATE link_view_country SET view=view+1, updated_at=:current_datetime WHERE short_url=:short_url AND country_code=:country_code' );
+				$stmt_update_country->bindParam( ':short_url', $link_id, PDO::PARAM_STR );
+				$stmt_update_country->bindParam( ':country_code', $country_code, PDO::PARAM_STR );
+				$stmt_update_country->bindParam( ':current_datetime', $current_datetime, PDO::PARAM_STR );
+				$stmt_update_country->execute();
+			} else {
+					$stmt_update_country = $db->prepare( 'INSERT INTO link_view_country (short_url, view, country, country_code, created_at, updated_at) VALUES (:short_url, 1, :country, :country_code, :current_datetime, :current_datetime)' );
+					$stmt_update_country->bindParam( ':short_url', $link_id, PDO::PARAM_STR );
+					$stmt_update_country->bindParam( ':country', $geo_location_data['country'], PDO::PARAM_STR );
+					$stmt_update_country->bindParam( ':country_code', $geo_location_data['country_code'], PDO::PARAM_STR );
+					$stmt_update_country->bindParam( ':current_datetime', $current_datetime, PDO::PARAM_STR );
+					$stmt_update_country->execute();
+			}
 		}
 	}
 
 	return true;
-
-	// $stmt2 = $db->prepare( 'SELECT views_count, date FROM link_view_count WHERE short_url = :short_url ORDER BY date DESC LIMIT 1' );
-	// $stmt2->bindParam( ':short_url', $link_id, PDO::PARAM_STR );
-	// $stmt2->execute();
-	// $view_count_data = $stmt2->fetch( PDO::FETCH_ASSOC );
-
-	// if ( $ips ) {
-	// $views_count = $view_count_data['view_count'] + 1;
-	// $viewed_ips  = unserialize( $ips );
-	// if ( ! in_array( $ip_address, $viewed_ips ) ) {
-	// $viewed_ips[] = $ip_address;
-	// $last_date    = $view_count_data['date'];
-
-	// if ( $last_date != $current_date ) {
-	// $view_count = 1;
-	// $stmt_insert = $db->prepare( 'INSERT INTO link_views (short_url, views_count, viewed_ips, date) VALUES (:short_url, :views_count, :viewed_ips, :current_date)' );
-	// $stmt_insert->bindParam( ':short_url', $link_id, PDO::PARAM_STR );
-	// $stmt_insert->bindParam( ':views_count', $view_count, PDO::PARAM_INT );
-	// $stmt_insert->bindParam( ':viewed_ips', json_encode( $viewed_ips ), PDO::PARAM_STR );
-	// $stmt_insert->bindParam( ':current_date', $current_date, PDO::PARAM_STR );
-	// $stmt_insert->execute();
-	// } else {
-	// $stmt_update = $db->prepare( 'UPDATE link_views SET views_count = :views_count, viewed_ips = :viewed_ips, viewed_at = :viewed_at WHERE short_url = :short_url AND date = :last_date' );
-	// $stmt_update->bindParam( ':views_count', $views_count, PDO::PARAM_INT );
-	// $stmt_update->bindParam( ':viewed_ips', json_encode( $viewed_ips ), PDO::PARAM_STR );
-	// $stmt_update->bindParam( ':viewed_at', $current_datetime, PDO::PARAM_STR );
-	// $stmt_update->bindParam( ':short_url', $link_id, PDO::PARAM_STR );
-	// $stmt_update->bindParam( ':last_date', $last_date, PDO::PARAM_STR );
-	// $stmt_update->execute();
-	// }
-	// }
-	// } else {
-	// $views_count     = 1;
-	// $viewed_ips      = array( $ip_address );
-	// $json_viewed_ips = json_encode( $viewed_ips );
-
-	// $stmt_insert = $db->prepare( 'INSERT INTO link_views (short_url, views_count, viewed_ips, date) VALUES (:short_url, :views_count, :viewed_ips, :current_date)' );
-	// $stmt_insert->bindParam( ':short_url', $link_id, PDO::PARAM_STR );
-	// $stmt_insert->bindParam( ':views_count', $views_count, PDO::PARAM_INT );
-	// $stmt_insert->bindParam( ':viewed_ips', $json_viewed_ips, PDO::PARAM_STR );
-	// $stmt_insert->bindParam( ':current_date', $current_date, PDO::PARAM_STR );
-	// $stmt_insert->execute();
-	// }
 }
 
 // Hàm để hiển thị lượt xem theo ngày, tháng và tất cả thời gian
@@ -193,4 +175,40 @@ function is_active_menu_item( $menu_item, $action = '' ) {
 	}
 
 	return $is_active;
+}
+
+function get_site_title() {
+	$title = 'Dashboard';
+	if ( isset( $_GET['controller'] ) ) {
+		switch ( $_GET['controller'] ) {
+			case 'links':
+				$title = 'Danh sách link';
+				break;
+			case 'user':
+				$title = 'Thành viên';
+				break;
+			default:
+				$title = 'Dashboard';
+		}
+	}
+	return $title;
+}
+
+function get_body_class() {
+	$classes = array();
+	if ( isset( $_GET['controller'] ) ) {
+		switch ( $_GET['controller'] ) {
+			case 'links':
+				$classes[] = 'page-link';
+				break;
+			case 'user':
+				$classes[] = 'page-user';
+				break;
+			default:
+				$classes[] = 'page-dashboard';
+		}
+	} else {
+		$classes[] = 'page-dashboard';
+	}
+	return implode( ' ', $classes );
 }

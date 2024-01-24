@@ -23,6 +23,33 @@ class User {
 		return $list;
 	}
 
+	public static function get_all_users() {
+		$db   = DB::getInstance();
+		$sql  = '
+			SELECT
+				u.id,
+				u.username,
+				u.full_name,
+				u.email,
+				SUM(lvc.views_count) AS total_views
+			FROM
+				users u
+			LEFT JOIN
+				links l ON u.id = l.user_id
+			LEFT JOIN
+				link_view_count lvc ON l.short_url = lvc.short_url AND DATE(lvc.date) = CURDATE()
+			GROUP BY
+				u.id
+			ORDER BY
+				total_views DESC;
+		';
+		$stmt = $db->prepare( $sql );
+		$stmt->execute();
+		$result = $stmt->fetchAll( PDO::FETCH_ASSOC );
+
+		return $result;
+	}
+
 	public static function get_user( $username ) {
 		$sql  = 'SELECT * FROM users WHERE username=:username OR email=:username';
 		$user = DB::fetch( $sql, array( ':username' => $username ) );

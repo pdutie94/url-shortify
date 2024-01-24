@@ -1,6 +1,7 @@
 <?php
 require_once 'controllers/base_controller.php';
 require_once 'models/user.php';
+require_once 'models/link.php';
 
 class UserController extends BaseController {
 	function __construct() {
@@ -30,11 +31,13 @@ class UserController extends BaseController {
 		$view_in_curr_month = User::get_view_in_month( $user_id );
 		$total_view         = User::get_total_view( $user_id );
 		$link_list          = User::get_link_list( $user_id );
+		$weekly_views       = Link::get_all_weekly_views( $user_id );
 		$data               = array(
 			'daily_view'    => $view_in_day_list,
 			'total_view'    => $total_view,
 			'view_in_month' => $view_in_curr_month,
 			'view_in_day'   => $view_in_day,
+			'weekly_views'  => $weekly_views,
 			'links'         => $link_list,
 		);
 		$this->render( 'stats', $data );

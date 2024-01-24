@@ -32,7 +32,7 @@ if ( isset( $_GET['u'] ) ) {
 		$link_id    = filter_var( $_GET['u'] );
 		$check      = update_link_views( $link_id, $ip_address );
 
-		// header('location: '. $long_url);
+		header( 'location: ' . $long_url );
 	}
 
 	die();

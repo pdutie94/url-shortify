@@ -5,11 +5,8 @@ if ( isset( $_COOKIE['user_token'] ) && isset( $_SESSION['user_id'] ) ) {
 	$expiration_time = time() + 3600;
 	setcookie( 'user_token', $user_id, $expiration_time, '/' );
 }
-$title = 'Flatsomix';
-if ( ! isset( $_GET['u'] ) ) {
-	$title = is_user_logged_in() ? 'Dashboard' : 'Đăng nhập';
-}
 
+$title = is_user_logged_in() ? get_site_title() : 'Đăng nhập';
 ?>
 
 <!DOCTYPE html>
@@ -27,7 +24,7 @@ if ( ! isset( $_GET['u'] ) ) {
 	<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
 </head>
 
-<body>
+<body class="<?php echo get_body_class(); ?>">
 	<?php if ( is_user_logged_in() ) { ?>
 		<?php include_once 'header.php'; ?>
 	<?php } ?>
@@ -45,25 +42,20 @@ if ( ! isset( $_GET['u'] ) ) {
 	
 
 	<script src="<?php echo SITE_URL; ?>/assets/uikit/js/uikit.min.js"></script>
-	<script src="<?php echo SITE_URL; ?>/assets/uikit/js/uikit-icons.min.js"></script>
+	<script	script src="<?php echo SITE_URL; ?>/assets/uikit/js/uikit-icons.min.js"></script>
+	<script>
+		/* <![CDATA[ */
+		var site_params = {'site_url': '<?php echo SITE_URL; ?>'}
+		/* ]]> */
+	</script>
 	<script src="<?php echo SITE_URL; ?>/assets/js/main.js"></script>
-	
-
+	<script src="<?php echo SITE_URL; ?>/assets/js/dashboard.js"></script>
 	<?php if ( isset( $_GET['controller'] ) ) { ?>
 		<?php if ( 'login' === $_GET['controller'] ) { ?>
 			<script src="<?php echo SITE_URL; ?>/assets/js/login.js"></script>
 		<?php } ?>
 
 		<?php if ( 'links' === $_GET['controller'] && ! isset( $_GET['action'] ) ) { ?>
-			<script>
-
-				/* <![CDATA[ */
-
-				var site_params = {'site_url': '<?php echo SITE_URL; ?>'}
-				/* ]]> */
-
-			</script>
-
 			<script src="<?php echo SITE_URL; ?>/assets/js/shortlink.js"></script>
 		<?php } ?>
 	<?php } ?>

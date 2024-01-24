@@ -89,6 +89,9 @@
 	border-radius: 20px;
 	border: transparent;
 }
+.uk-progress {
+	height: 10px;
+}
 
 html {
 	background-color: #f4f6fa;
@@ -157,6 +160,104 @@ input.long_url {
 	box-shadow: 0 3px 5px rgba(0,0,0,0.05);
 }
 
+.users-list .user-list-item:last-child {
+	margin-bottom: 0 !important;
+}
+.user-list-item {
+	border: 1px solid #f5f5f5;
+    border-radius: 10px;
+	transition: all .3s;
+	position: relative;
+}
+.user-list-item:nth-child(1) {
+	/* border-color: #FFD700;
+	border-bottom-width: 6px; */
+	box-shadow: 6px 6px 0px #FFD700;
+}
+.user-list-item:nth-child(2) {
+	/* border-color: #C0C0C0;
+	border-bottom-width: 3px; */
+	box-shadow: 4px 4px 0px #C0C0C0;
+}
+.user-list-item:nth-child(3) {
+	/* border-color: #B87333;
+	border-bottom-width: 2px; */
+	box-shadow: 2px 2px 0px #B87333;
+}
+.user-list-item .rank-number {
+	font-size: 50px;
+	font-weight: 800;
+	position: absolute;
+	color: #FFD700;
+	line-height: 1;
+    top: -20px;
+    left: -12px;
+}
+.user-list-item:nth-child(2) .rank-number {
+	color: #C0C0C0;
+	font-size: 45px;
+	opacity: 0.8;
+    left: -15px;
+}
+.user-list-item:nth-child(3) .rank-number {
+	color: #B87333;
+	font-size: 40px;
+	opacity: 0.6;
+    left: -15px;
+}
+.user-list-item a {
+    padding: 10px;
+}
+.user-list-item a:hover {
+	text-decoration: none;
+}
+.user-info__name {
+	color: #333;
+	font-size: 17px;
+}
+.user-info__name:hover {
+	text-decoration: none;
+	color: #0d9b31;
+}
+.user-info__avatar img {
+	box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+.user-name__fullname {
+	font-weight: 600;
+}
+.user-name__account {
+	font-style: italic;
+	color: #526281;
+}
+.user-info__name:hover .user-name__account {
+	text-decoration: none;
+}
+.user-item-stat {
+	gap: 10px;
+}
+.stat-box {
+	padding: 5px 10px;
+	background: #f5ffe5;
+	border-radius: 5px;
+	font-size: 12px;
+	min-width: 80px;
+	box-sizing: border-box;
+}
+.stat-box.stat__weekly-view {
+	background: #eaf8ff;
+}
+.stat-box.stat__monthly-view {
+	background: #fbeeff;
+}
+.stat-box__label {
+	color: #526281;
+}
+.stat-box__number {
+	font-weight: 500;
+	color:#1e1765;
+	font-size: 13px;
+}
+
 @media (max-width: 959px) {
 	body {
 		font-size: 15px;
@@ -191,5 +292,32 @@ input.long_url {
 	}
 	.my-margin-bottom {
 		margin-bottom: 1rem !important;
+	}
+	.my-margin-small-top {
+		margin-top: 20px;
+	}
+	.user-list-item a {
+		flex-direction: column;
+		gap: 10px;
+	}
+	.user-item-stat {
+		width: 100%;
+	}
+	.stat-box {
+		width: calc(100% / 3);
+		min-width: unset;
+	}
+	.user-list-item .rank-number {
+		font-size: 40px;
+		top: -15px;
+		left: -5px;
+	}
+	.user-list-item:nth-child(2) .rank-number {
+		font-size: 35px;
+		left: -10px;
+	}
+	.user-list-item:nth-child(3) .rank-number {
+		font-size: 30px;
+		left: -10px;
 	}
 }
