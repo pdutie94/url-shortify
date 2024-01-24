@@ -23,6 +23,9 @@ if ( isset( $_POST['action_name'] ) ) {
 		case 'refresh_dashboard_data':
 			refresh_dashboard_data();
 			break;
+		case 'save_short_link_title':
+			save_short_link_title();
+			break;
 		default:
 			break;
 	}
@@ -155,6 +158,7 @@ function save_short_url_id() {
 
 	$long_url         = $_POST['long_url'];
 	$short_id         = $_POST['short_url_id'];
+	$title            = $_POST['title'];
 	$current_datetime = date( 'd-m-Y H:i:s' );
 
 	if ( ! empty( $long_url ) && ! empty( $short_id ) && filter_var( $long_url, FILTER_VALIDATE_URL ) ) {
@@ -175,19 +179,21 @@ function save_short_url_id() {
 			);
 		} else {
 			$curr_user  = User::get_current_user();
-			$sql_insert = 'INSERT INTO links (long_url, short_url, user_id) VALUES (:long_url, :short_url, :user_id)';
+			$sql_insert = 'INSERT INTO links (title, long_url, short_url, user_id) VALUES (:title, :long_url, :short_url, :user_id)';
 			$query      = $db->prepare( $sql_insert );
+			$query->bindValue( ':title', $title, PDO::PARAM_STR );
 			$query->bindValue( ':long_url', $long_url, PDO::PARAM_STR );
 			$query->bindValue( ':short_url', $short_id, PDO::PARAM_STR );
 			$query->bindValue( ':user_id', intval( $curr_user['id'] ), PDO::PARAM_INT );
 			$query->execute();
+			$last_insert_id = $db->lastInsertId();
 
 			echo json_encode(
 				array(
 					'success' => true,
 					'data'    => array(
-						'username'   => $curr_user['username'],
-						'long_url'   => $long_url,
+						'short_id'   => $last_insert_id,
+						'title'      => $title,
 						'short_url'  => SITE_URL . '/' . $short_id,
 						'created_at' => $current_datetime,
 					),
@@ -195,4 +201,41 @@ function save_short_url_id() {
 			);
 		}
 	}
+}
+
+function save_short_link_title() {
+	$db = DB::getInstance();
+
+	$short_id = isset( $_POST['short_id'] ) ? intval( $_POST['short_id'] ) : 0;
+	$title    = isset( $_POST['title'] ) ? htmlspecialchars( $_POST['title'], ENT_QUOTES, 'UTF-8' ) : '';
+
+	if ( 0 !== $short_id ) {
+		$sql  = 'UPDATE links SET title=:title WHERE id=:id';
+		$stmt = $db->prepare( $sql );
+		$stmt->bindParam( ':id', $short_id, PDO::PARAM_INT );
+		$stmt->bindParam( ':title', $title, PDO::PARAM_STR );
+		$check = $stmt->execute();
+		if ( $check ) {
+			echo json_encode(
+				array(
+					'success' => true,
+				)
+			);
+		} else {
+			echo json_encode(
+				array(
+					'success' => false,
+					'message' => 'Đã có lỗi xảy ra, hãy thử lại sau',
+				)
+			);
+		}
+	} else {
+		echo json_encode(
+			array(
+				'success' => false,
+				'message' => 'Link không tồn tại',
+			)
+		);
+	}
+	exit();
 }

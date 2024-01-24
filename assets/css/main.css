@@ -76,6 +76,9 @@
 	font-weight: 500;
 	margin-bottom: 1rem;
 }
+.my-text-placeholder {
+	color: #b3b3b3;
+}
 
 ::-webkit-scrollbar {
 	width: 6px;
@@ -256,6 +259,9 @@ input.long_url {
 	font-weight: 500;
 	color:#1e1765;
 	font-size: 13px;
+}
+.link-title:hover {
+	background-color: #eaf8ff;
 }
 
 @media (max-width: 959px) {

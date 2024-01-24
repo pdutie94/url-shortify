@@ -154,7 +154,7 @@ class Link {
 				<?php if ( $is_active ) { ?>
 					<li class="uk-active"><span><?php echo $i; ?></span></li>
 				<?php } else { ?>
-					<li><a href="<?php echo SITE_URL; ?>/index.php?controller=links&action=list&page=<?php echo $i; ?>"><?php echo $i; ?></a></li>
+					<li><a href="<?php echo SITE_URL; ?>/index.php?controller=links&page=<?php echo $i; ?>"><?php echo $i; ?></a></li>
 				<?php } ?>
 			<?php } ?>
 			
